@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="微软为对话机器人（Chatbot）的开发提供了一整套的解决方案，其中主要的部件包括Azure Bot Service和BotBuilder。Azure Bot Service用来在云端运行开发好的Bot应用；BotBuilder则是一个开源的Bot开发工具集，包括了SDK，CLI，Emulator和一个webchat client。BotBuilder作为Microsoft Bot Framewo">
+<meta name="keywords" content="Azure,Microsoft Bot Framework,WeChat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Microsoft Bot Framework（一）：BotBuilder">
+<meta property="og:url" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="微软为对话机器人（Chatbot）的开发提供了一整套的解决方案，其中主要的部件包括Azure Bot Service和BotBuilder。Azure Bot Service用来在云端运行开发好的Bot应用；BotBuilder则是一个开源的Bot开发工具集，包括了SDK，CLI，Emulator和一个webchat client。BotBuilder作为Microsoft Bot Framewo">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-activity-processing-stack.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-dialog-state-solution.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-state.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/V4-Emulator-inspector.png">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解Microsoft Bot Framework（一）：BotBuilder">
+<meta name="twitter:description" content="微软为对话机器人（Chatbot）的开发提供了一整套的解决方案，其中主要的部件包括Azure Bot Service和BotBuilder。Azure Bot Service用来在云端运行开发好的Bot应用；BotBuilder则是一个开源的Bot开发工具集，包括了SDK，CLI，Emulator和一个webchat client。BotBuilder作为Microsoft Bot Framewo">
+<meta name="twitter:image" content="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-activity-processing-stack.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>理解Microsoft Bot Framework（一）：BotBuilder | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解Microsoft Bot Framework（一）：BotBuilder
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-29 17:53:03" itemprop="dateCreated datePublished" datetime="2019-01-29T17:53:03+08:00">2019-01-29</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/Understanding-Microsoft-Bot-Framework-1/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/Understanding-Microsoft-Bot-Framework-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>微软为对话机器人（Chatbot）的开发提供了一整套的解决方案，其中主要的部件包括Azure Bot Service和BotBuilder。Azure Bot Service用来在云端运行开发好的Bot应用；<a href="https://github.com/Microsoft/BotBuilder" target="_blank" rel="noopener">BotBuilder</a>则是一个开源的Bot开发工具集，包括了SDK，CLI，Emulator和一个webchat client。BotBuilder作为Microsoft Bot Framework的一个亮点，给予开发者极大的自由度去设计和完成一个Bot应用的开发。在这里记录一下如何理解Microsoft Bot Framework的架构，解释相关的概念。<br><a id="more"></a></p>
+<blockquote>
+<p>BotBuilder SDK V4作为最新版本，和前一代V3相比，几乎是全新的一套SDK。从概念到细节都听取了开发者的大量意见，并做出了巨大的改变。因此，这里就只关注基于V4版本的开发。</p>
+</blockquote>
+<h1 id="初识BotBuilder"><a href="#初识BotBuilder" class="headerlink" title="初识BotBuilder"></a>初识BotBuilder</h1><p>对于开发者来说，一套趁手的开发套件需要包括成熟的SDK，自动化工具，调试工具，测试和部署工具。BotBuilder为Chatbot的开发提供如下工具：</p>
+<ol>
+<li>Bot Builder V4 SDK，支持C#(.NETCore 2.2)，JavaScript, Java(preview)，Python(Preview)四种开发语言。</li>
+<li>Bot Framework Emulator，本地化的Chatbot的调试工具。</li>
+<li>Bot Builder CLI tools，为不同的Bot组件提供命令行工具，方便实现自动化的开发部署工作。</li>
+<li><a href="https://github.com/microsoft/botframework-webchat" target="_blank" rel="noopener">Bot Framework webchat</a>，可以定制化的chatbot web前端，可以把开发好的Bot直接集成到现有的网页中。</li>
+<li><a href="https://github.com/microsoft/botbuilder-samples" target="_blank" rel="noopener">BotBuilder Samples</a>，实现不同功能的Sample Code。</li>
+</ol>
+<h1 id="Microsoft-Bot-SDK中的一些概念"><a href="#Microsoft-Bot-SDK中的一些概念" class="headerlink" title="Microsoft Bot SDK中的一些概念"></a>Microsoft Bot SDK中的一些概念</h1><p>在上手Bot SDK之前，最好先简单了解一些基本概念和流程。</p>
+<h2 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h2><p>在BotBuilder SDK的设计中，Activity是会话系统中最基本的信息单元对象。任何用户和Bot之间的交互都需要通过一个Activity Object来承载，用户发送一条文字信息是一个activity，用户加入对话是一个activity，用户正在输入这个状态也是一个activity。从BotBuilder的源码中可以看到目前定义的Activity有如下类型：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//botbuilder-dotnet/libraries/Microsoft.Bot.Schema/ActivityTypes.cs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ActivityTypes</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Message = <span class="string">"message"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> ContactRelationUpdate = <span class="string">"contactRelationUpdate"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> ConversationUpdate = <span class="string">"conversationUpdate"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Typing = <span class="string">"typing"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> EndOfConversation = <span class="string">"endOfConversation"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Event = <span class="string">"event"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Invoke = <span class="string">"invoke"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> DeleteUserData = <span class="string">"deleteUserData"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> MessageUpdate = <span class="string">"messageUpdate"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> MessageDelete = <span class="string">"messageDelete"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> InstallationUpdate = <span class="string">"installationUpdate"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> MessageReaction = <span class="string">"messageReaction"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Suggestion = <span class="string">"suggestion"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Trace = <span class="string">"trace"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> Handoff = <span class="string">"handoff"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Turn"><a href="#Turn" class="headerlink" title="Turn"></a>Turn</h2><p>会话，必然是一来一回，一个Turn就是<code>从用户给Bot发送一个Activity开始，到Bot给用户返回一条Activity结束</code>的一个过程。把Turn这种行为抽象出来的目的是为了Bot可以获取Turn Context。前面我们知道Activity只定义了信息的结构，那么这个消息是谁发的，发给谁的，怎么处理这个消息等等同样重要，我们需要一个Turn Context来承载。可以看一下ITurnContext这个接口的定义<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//botbuilder-dotnet/libraries/Microsoft.Bot.Builder/ITurnContext.cs</span></span><br><span class="line"><span class="comment">//注释已删除</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ITurnContext</span></span><br><span class="line">&#123;</span><br><span class="line">    BotAdapter Adapter &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    TurnContextStateCollection TurnState &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    Activity Activity &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">bool</span> Responded &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="function">Task&lt;ResourceResponse&gt; <span class="title">SendActivityAsync</span>(<span class="params"><span class="keyword">string</span> textReplyToSend, <span class="keyword">string</span> speak = <span class="literal">null</span>,<span class="keyword">string</span> inputHint = InputHints.AcceptingInput, CancellationToken cancellationToken =<span class="keyword">default</span>(CancellationToken</span>))</span>;</span><br><span class="line">    <span class="function">Task&lt;ResourceResponse&gt; <span class="title">SendActivityAsync</span>(<span class="params">IActivity activity, CancellationTokencancellationToken = <span class="keyword">default</span>(CancellationToken</span>))</span>;</span><br><span class="line">    Task&lt;ResourceResponse[]&gt; SendActivitiesAsync(IActivity[] activities,CancellationTokencancellationToken = <span class="keyword">default</span>(CancellationToken));</span><br><span class="line">    <span class="function">Task&lt;ResourceResponse&gt; <span class="title">UpdateActivityAsync</span>(<span class="params">IActivity activity,CancellationTokencancellationToken = <span class="keyword">default</span>(CancellationToken</span>))</span>;</span><br><span class="line">    <span class="function">Task <span class="title">DeleteActivityAsync</span>(<span class="params"><span class="keyword">string</span> activityId, CancellationToken cancellationToken = defaul(CancellationToken</span>))</span>;</span><br><span class="line">    <span class="function">Task <span class="title">DeleteActivityAsync</span>(<span class="params">ConversationReference conversationReference,CancellationTokencancellationToken = <span class="keyword">default</span>(CancellationToken</span>))</span>;</span><br><span class="line">    <span class="function">ITurnContext <span class="title">OnSendActivities</span>(<span class="params">SendActivitiesHandler handler</span>)</span>;</span><br><span class="line">    <span class="function">ITurnContext <span class="title">OnUpdateActivity</span>(<span class="params">UpdateActivityHandler handler</span>)</span>;</span><br><span class="line">    <span class="function">ITurnContext <span class="title">OnDeleteActivity</span>(<span class="params">DeleteActivityHandler handler</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h2><p>Activity和Turn是Bot会话层面的抽象设计，和实际数据的传输是隔离的。我们当前的Bot应用本质上是一个基于HTTP协议的Web应用。所以在设计上，Adapter的作用是利用HTTP协议发送和接受Activity，并在接收到Activity的时候创建相应的TurnContext。另外，Adapter还一个重要的工作是调用定义好的Middleware（见下）。Adapter通过HTTP POST的Body接收一个JSON格式的Activity，实例化一个Activity对象，再创建对应的TurnContext对象，然后调用Middlerware作对应的处理，最后送给Bot做相应的逻辑处理。<br><img src="/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-activity-processing-stack.png" width="500"></p>
+<h2 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a>Middleware</h2><p>Middleware工作在Adaptor和Bot逻辑单元之间，跟其他的消息系统的middleware的作用类似，如果有些处理工作对每个Activite都要做，那么可以把这类工作抽象成一个Middleware放在消息处理的pipeline上。举例来说，如果你的Bot只能处理英文消息，那你肯定希望Bot的输入消息都是英文。这时如果收到一个中文消息，则可以调用一个Translator的Middlerware，在message到达Bot之前先把它翻译成英文。反过来，也可以通过Middleware把发送的message翻译成用户需要的语言。Bot SDK的<a href="https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-middleware?view=azure-bot-service-4.0" target="_blank" rel="noopener">文档</a>中另外一个关于dialog state的middleware的例子如下：<br><img src="/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-dialog-state-solution.png" width="500"></p>
+<h2 id="Bot-State"><a href="#Bot-State" class="headerlink" title="Bot State"></a>Bot State</h2><p>对于一个智能对话系统来说，“记忆力”是非常重要的。上面定义的Turn是一个无状态的结构。一场对话（Conversation）往往有多个Turn组成，怎么在对话的上下文中“记住”一些事情是非常重要的。比如说开场的时候Bot问过了用户的姓名，后面的对话中，Bot应该记住这个信息并加以利用。在BotBuilde SDK V4中，Bot State被定义成一个Key-Value对，并提供了相应的Bot State方案，主要包括三个层面的组件：Storage，State Management和State Property Accessors。他们的关系可以见下面的示意图：<br><img src="/2019/Understanding-Microsoft-Bot-Framework-1/bot-builder-state.png" width="500"></p>
+<h3 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h3><p>目前Bot SDK直接支持三种Storage方案：</p>
+<ol>
+<li>Memory storage</li>
+<li>Azure Blob storage</li>
+<li>Azure Cosmos DB (NoSQL) storage</li>
+</ol>
+<p>通过简单的配置，可以把State保存到以上三种不同的地方，而不用考虑数据结构或者数据库的设计。另外，当前是支持自定义其他Storage方案的，不在此详细记录。</p>
+<h3 id="State-Management"><a href="#State-Management" class="headerlink" title="State Management"></a>State Management</h3><p>如何从上述的Storage层读取和写入数据，是State Management做的事情。开发者不需要关心具体的实现细节，SDK会自动处理数据的保存。除此支持，SDK粗略的划分了三种State的类型：<code>User state</code>, <code>Conversation state</code>,<br><code>Private conversation state</code>。例如，你可以在ConversationState里面记录<code>Bot在上一个Turn里面问问题</code>，<code>当前turn的主题</code>或者<code>上一个turn的主题</code>等等。</p>
+<h3 id="State-Property-Accessors"><a href="#State-Property-Accessors" class="headerlink" title="State Property Accessors"></a>State Property Accessors</h3><p>Accessor为定义的State提供了<code>get</code>和<code>set</code>方法，方便开发者获取和设置数据。值得注意的是<code>set</code>方法只是把State数据存储到Cache中，要把State数据持久化到Storage中，需要调用对应State Object的<code>SaveChanges()</code>方法。如前面的例子所说，当Bot在一个Turn中获取了用户的姓名，就可以用Accessor把这个姓名数据放到UserState中。在处理后面的Turn时，如果需要再用Accessor把这个数据取出来。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>总的来说，Microsoft Bot SDK给开发者定义了一套Bot的开发范式，从Activity到Turn，再到Bot State。开发者可以专注于Bot逻辑的开发，而不需要关心和设计对话系统本身。</p>
+<h1 id="Bot-Framework-Emulator"><a href="#Bot-Framework-Emulator" class="headerlink" title="Bot Framework Emulator"></a>Bot Framework Emulator</h1><p>我们开发好的Bot是一个后端应用，并没有一个现成的前端。只有部署到Azure Bot Service上之后，我们才可以通过不同的Channel去和Bot进行对话。那么在开发阶段，Bot Framework Emulator就非常有用了。在本地调试Bot的时候，Emulator充当了一个前端的作用，可以直接和本地或者部署在云端的Bot应用进行交互，极大的方便了本地调试。<br>其中对调试开发最有用的功能就是Inspector，可以帮助trace activity，查看Activity的payload：<br><img src="/2019/Understanding-Microsoft-Bot-Framework-1/V4-Emulator-inspector.png" width="500"></p>
+<h1 id="Bot-Framework-webchat"><a href="#Bot-Framework-webchat" class="headerlink" title="Bot Framework webchat"></a>Bot Framework webchat</h1><p>之前我们提到Bot Service有很多的Channels，用户可以通过不同的Channels来和Bot进行交互。如果开发者希望用户通过Web端和Bot进行交互，那么直接集成<a href="https://github.com/microsoft/botframework-webchat" target="_blank" rel="noopener">Bot Framework Webchat</a>到网页上：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"webchat"</span> <span class="attr">role</span>=<span class="string">"main"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.botframework.com/botframework-webchat/latest/webchat.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">      <span class="built_in">window</span>.WebChat.renderWebChat(&#123;</span></span><br><span class="line"><span class="javascript">        directLine: <span class="built_in">window</span>.WebChat.createDirectLine(&#123; <span class="attr">secret</span>: <span class="string">'YOUR_BOT_SECRET_FROM_AZURE_PORTAL'</span> &#125;),</span></span><br><span class="line"><span class="javascript">        userID: <span class="string">'YOUR_USER_ID'</span></span></span><br><span class="line"><span class="javascript">      &#125;, <span class="built_in">document</span>.getElementById(<span class="string">'webchat'</span>));</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0&amp;tabs=cs" target="_blank" rel="noopener">How bots work</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-state?view=azure-bot-service-4.0" target="_blank" rel="noopener">Managing state</a></li>
+<li><a href="https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-middleware?view=azure-bot-service-4.0" target="_blank" rel="noopener">Middleware</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/" title="理解Microsoft Bot Framework（一）：BotBuilder">http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Azure/" rel="tag"># Azure</a>
+          
+            <a href="/tags/Microsoft-Bot-Framework/" rel="tag"># Microsoft Bot Framework</a>
+          
+            <a href="/tags/WeChat/" rel="tag"># WeChat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/" rel="next" title="给微信公众号加个Bot（一）">
+                <i class="fa fa-chevron-left"></i> 给微信公众号加个Bot（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/Understanding-Microsoft-Bot-Framework-2/" rel="prev" title="理解Microsoft Bot Framework（二）">
+                理解Microsoft Bot Framework（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初识BotBuilder"><span class="nav-number">1.</span> <span class="nav-text">初识BotBuilder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Microsoft-Bot-SDK中的一些概念"><span class="nav-number">2.</span> <span class="nav-text">Microsoft Bot SDK中的一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity"><span class="nav-number">2.1.</span> <span class="nav-text">Activity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Turn"><span class="nav-number">2.2.</span> <span class="nav-text">Turn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adapter"><span class="nav-number">2.3.</span> <span class="nav-text">Adapter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Middleware"><span class="nav-number">2.4.</span> <span class="nav-text">Middleware</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bot-State"><span class="nav-number">2.5.</span> <span class="nav-text">Bot State</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Storage"><span class="nav-number">2.5.1.</span> <span class="nav-text">Storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State-Management"><span class="nav-number">2.5.2.</span> <span class="nav-text">State Management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State-Property-Accessors"><span class="nav-number">2.5.3.</span> <span class="nav-text">State Property Accessors</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.6.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bot-Framework-Emulator"><span class="nav-number">3.</span> <span class="nav-text">Bot Framework Emulator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bot-Framework-webchat"><span class="nav-number">4.</span> <span class="nav-text">Bot Framework webchat</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2019/Understanding-Microsoft-Bot-Framework-1/";
+        this.page.identifier = "2019/Understanding-Microsoft-Bot-Framework-1/";
+        this.page.title = '理解Microsoft Bot Framework（一）：BotBuilder';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

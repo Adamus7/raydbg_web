@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="In this blog, I will document how to solve a typical scenario of IE 11 install/upgrade failure.">
+<meta name="keywords" content="Internet Explorer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IE11 Installation Failure with Error Code 9c59">
+<meta property="og:url" content="http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="In this blog, I will document how to solve a typical scenario of IE 11 install/upgrade failure.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IE11 Installation Failure with Error Code 9c59">
+<meta name="twitter:description" content="In this blog, I will document how to solve a typical scenario of IE 11 install/upgrade failure.">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>IE11 Installation Failure with Error Code 9c59 | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IE11 Installation Failure with Error Code 9c59
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-11-25 22:26:04" itemprop="dateCreated datePublished" datetime="2017-11-25T22:26:04+08:00">2017-11-25</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/IE11-Installation-Failure-with-Error-9c59/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/IE11-Installation-Failure-with-Error-9c59/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>In this blog, I will document how to solve a typical scenario of IE 11 install/upgrade failure.<br><a id="more"></a></p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><p>Since IE 11 is the only supported IE version on Win 7 SP1 and Win Server 2008 R2 currently, you have to update IE to latest version to get security and feature updates. However, IE is not a standalone application which can be installed, uninstalled or upgraded easily.<br>You might already have the <a href="https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads" target="_blank" rel="noopener">official IE 11 installation package</a>, but sometime the installation just failed as below:<br></p>
+<h1 id="Logs"><a href="#Logs" class="headerlink" title="Logs"></a>Logs</h1><p>There are some logs can help you to dig into this error:</p>
+<ul>
+<li>%windir%\IE11_main.log</li>
+<li>%windir%\Logs\CBS\CBS.log</li>
+<li>%windir%\Logs\DISM\DISM.log</li>
+</ul>
+<h1 id="A-typical-failure-with-error-code-9c59-in-IE11-main-log"><a href="#A-typical-failure-with-error-code-9c59-in-IE11-main-log" class="headerlink" title="A typical failure with error code 9c59 in IE11_main.log"></a>A typical failure with error code 9c59 in IE11_main.log</h1><p>Probably 50% of IE 11 installation failure has a similar pattern in IE11_mail.log as below:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">04:36.262: INFO:    Waiting for Active Setup to complete. (&#123;A509B1A8-37EF-4b3f-8CFC-4F3A74704073&#125;)</span><br><span class="line">04:41.269: INFO:    Waiting for Active Setup to complete. (&#123;A509B1A8-37EF-4b3f-8CFC-4F3A74704073&#125;)</span><br><span class="line">04:46.277: INFO:    Waiting for Active Setup to complete. (&#123;A509B1A8-37EF-4b3f-8CFC-4F3A74704073&#125;)</span><br><span class="line">04:51.285: INFO:    Waiting for Active Setup to complete. (&#123;A509B1A8-37EF-4b3f-8CFC-4F3A74704073&#125;)</span><br><span class="line">04:56.292: INFO:    Waiting for Active Setup to complete. (&#123;A509B1A8-37EF-4b3f-8CFC-4F3A74704073&#125;)</span><br><span class="line">05:01.331: INFO:    PauseOrResumeAUThread: Successfully resumed Automatic Updates.</span><br><span class="line">05:12.704: INFO:    Setup exit code: 0x00009C59 (40025) - The neutral cab failed to install.</span><br><span class="line">05:12.704: INFO:    Cleaning up temporary files in: C:\Windows\TEMP\IE17934.tmp</span><br><span class="line">05:12.766: INFO:    Unable to remove directory C:\Windows\TEMP\IE17934.tmp, marking for deletion on reboot.</span><br><span class="line">05:12.766: INFO:    Released Internet Explorer Installer Mutex</span><br></pre></td></tr></table></figure><br>The setup exit code: <code>0x00009C59 (40025)</code> means <a href="https://docs.microsoft.com/en-us/internet-explorer/ie11-deploy-guide/setup-problems-with-ie11" target="_blank" rel="noopener">USER_ERROR_NEUTRAL_CAB_INSTALL_FAILED</a></p>
+<p>Then you might see a similar error pattern in CBS.log as below:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">2017-11-24 14:07:39, Info                  CBS    Exec: Staging Package: Package_3_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0, Update: 2706045-8_neutral_GDR, PinDeployment: amd64_695c405833e475d1d5937b41a3983d92_31bf3856ad364e35_8.0.7601.17866_none_f28003cc92801a49</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to find file: amd64_microsoft-windows-scripting-vbscript_31bf3856ad364e35_6.1.7600.21238_none_a51187a7608a895d\vbscript.dll [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to gather all required files. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to gather all missing files for package: Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428 [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CSI    00000016@2017/11/24:06:07:40.030 CSI Transaction @0xf8020 destroyed</span><br><span class="line">2017-11-24 14:07:40, Error                 CBS    Failed to pre- stage package: Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428 [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Perf: Stage chain complete.</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to stage execution chain. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Error                 CBS    Failed to process single phase execution. [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    WER: Generating failure report for package: Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428, status: 0x80070002, failure source: Stage, start state: Resolved, target state: Installed, client id: DISM Package Manager Provider</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to query DisableWerReporting flag.  Assuming not set... [HRESULT = 0x80070002 - ERROR_FILE_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to add %windir%\winsxs\pending.xml to WER report because it is missing.  Continuing without it...</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Failed to add %windir%\winsxs\pending.xml.bad to WER report because it is missing.  Continuing without it...</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Reboot mark refs: 0</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Reporting package change for package: Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428, current: Resolved, pending: Default, start: Resolved, applicable: Installed, target: Installed, limit: Installed, hotpatch status: StillGoing, status: 0x0, failure source: Stage, reboot required: False, client id: DISM Package Manager Provider, initiated offline: False, execution sequence: 1186, first merged sequence: 1186</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Upload requested for report: PackageChangeBegin_Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428, session id: 142859, sample type: Standard</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Ignoring upload request because the sample type is not enabled: Standard</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Reporting package change completion for package: Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428, current: Resolved, original: Resolved, target: Installed, status: 0x80070002, failure source: Stage, failure details: &quot;(null)&quot;, client id: DISM Package Manager Provider, initiated offline: False, execution sequence: 1186, first merged sequence: 1186</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: stage time performance datapoint is invalid. [HRESULT = 0x80070490 - ERROR_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: execute time performance datapoint is invalid. [HRESULT = 0x80070490 - ERROR_NOT_FOUND]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Failed to initialize Win SAT assessment. [HRESULT = 0x80040154 - Unknown Error]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: average disk throughput datapoint is invalid [HRESULT = 0x80040154 - Unknown Error]</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Upload requested for report: PackageChangeEnd_Microsoft-Windows-InternetExplorer-Package-TopLevel~31bf3856ad364e35~amd64~~11.2.9600.16428, session id: 142862, sample type: Standard</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    SQM: Ignoring upload request because the sample type is not enabled: Standard</span><br><span class="line">2017-11-24 14:07:40, Info                  CBS    Enabling LKG boot option</span><br></pre></td></tr></table></figure><br>The installation failed start at <code>Exec: Staging Package: Package_3_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0.</code><br>That means one package of KB2706045 is corrupted for some reasons.</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>As the installation failed because of a outdated and corrupted package, we can try to remove that package by DISM command first.</p>
+<ol>
+<li><p>Run below command to get the package full name :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; dism /online /get-packages |findstr KB2706045</span><br><span class="line">Package Identity : Package_3_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0</span><br><span class="line">Package Identity : Package_for_KB2706045_SP1~31bf3856ad364e35~amd64~~6.1.1.0</span><br><span class="line">Package Identity : Package_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Then use DISM command to remove that top level package:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; dism /online /remove-package /packagename:Package_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0</span><br><span class="line">Deployment Image Servicing and Management tool</span><br><span class="line">Version: 6.1.7600.16385</span><br><span class="line"> </span><br><span class="line">Image Version: 6.1.7600.16385</span><br><span class="line"> </span><br><span class="line">Processing 1 of 1 - Removing package Package_for_KB2706045~31bf3856ad364e35~amd64~~6.1.1.0</span><br><span class="line">[==========================100.0%==========================]</span><br><span class="line">The operation completed successfully.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>If the above action finished with no error, please try to reinstall IE 11 again.<br><strong>Note</strong>: It might fail again because there might be multiple corrupted files. If this happens, please redo the procedure for any additional package you might have according the CBS.log. Usually we saw there are 2-3 Packages corrupted. </p>
+</li>
+</ol>
+<h1 id="More-words"><a href="#More-words" class="headerlink" title="More words"></a>More words</h1><p>If you need an offline IE 11 full installation package, please follow Joji’s steps:</p>
+<ul>
+<li><a href="http://joji.me/en-us/blog/create-internet-explorer-11-batch-deployment-package" target="_blank" rel="noopener">Create Internet Explorer 11 batch deployment package</a></li>
+</ul>
+<p>Also you can use <a href="https://technet.microsoft.com/en-us/microsoft-edge/bb219517.aspx" target="_blank" rel="noopener">Internet Explorer Administration Kit (IEAK)</a> to customize IE 11 installation.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/" title="IE11 Installation Failure with Error Code 9c59">http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Internet-Explorer/" rel="tag"># Internet Explorer</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/Lets-Encrypt-on-Azure-Web-Apps/" rel="next" title="Let's Encrypt Azure Web Apps">
+                <i class="fa fa-chevron-left"></i> Let's Encrypt Azure Web Apps
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/Call-Native-Win32-API-in-PowerShell/" rel="prev" title="Call Native Win32 API in PowerShell">
+                Call Native Win32 API in PowerShell <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Logs"><span class="nav-number">2.</span> <span class="nav-text">Logs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A-typical-failure-with-error-code-9c59-in-IE11-main-log"><span class="nav-number">3.</span> <span class="nav-text">A typical failure with error code 9c59 in IE11_main.log</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">3.1.</span> <span class="nav-text">Solution</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#More-words"><span class="nav-number">4.</span> <span class="nav-text">More words</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2017/IE11-Installation-Failure-with-Error-9c59/";
+        this.page.identifier = "2017/IE11-Installation-Failure-with-Error-9c59/";
+        this.page.title = 'IE11 Installation Failure with Error Code 9c59';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Bot，会话助手类工具，一直有着相当广泛的应用。最早的Bot可能类似电信的电话查询系统：“查询账单请按1，修改密码请按2……”。这种机械式的应用渐渐被更为智能的对话助理所代替，典型代表有Siri和Cortana这种个人助理类应用。对于个人和企业，如何开发一个具有一定业务能力的Bot，一直是一个比较热门的话题。在这篇博客中，我将记录如何基于Microsoft Bot Framework为微信公众号添">
+<meta name="keywords" content="Azure,Microsoft Bot Framework,WeChat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给微信公众号加个Bot（一）">
+<meta property="og:url" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="Bot，会话助手类工具，一直有着相当广泛的应用。最早的Bot可能类似电信的电话查询系统：“查询账单请按1，修改密码请按2……”。这种机械式的应用渐渐被更为智能的对话助理所代替，典型代表有Siri和Cortana这种个人助理类应用。对于个人和企业，如何开发一个具有一定业务能力的Bot，一直是一个比较热门的话题。在这篇博客中，我将记录如何基于Microsoft Bot Framework为微信公众号添">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/what-is-bot.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/dev-config-1.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/bot-directline.png">
+<meta property="og:image" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/official-account-test.png">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.125Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="给微信公众号加个Bot（一）">
+<meta name="twitter:description" content="Bot，会话助手类工具，一直有着相当广泛的应用。最早的Bot可能类似电信的电话查询系统：“查询账单请按1，修改密码请按2……”。这种机械式的应用渐渐被更为智能的对话助理所代替，典型代表有Siri和Cortana这种个人助理类应用。对于个人和企业，如何开发一个具有一定业务能力的Bot，一直是一个比较热门的话题。在这篇博客中，我将记录如何基于Microsoft Bot Framework为微信公众号添">
+<meta name="twitter:image" content="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/what-is-bot.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>给微信公众号加个Bot（一） | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">给微信公众号加个Bot（一）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-17 10:42:23" itemprop="dateCreated datePublished" datetime="2019-01-17T10:42:23+08:00">2019-01-17</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/How-to-Create-a-Bot-for-Wechat-Official-Account/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Bot，会话助手类工具，一直有着相当广泛的应用。最早的Bot可能类似电信的电话查询系统：“查询账单请按1，修改密码请按2……”。这种机械式的应用渐渐被更为智能的对话助理所代替，典型代表有Siri和Cortana这种个人助理类应用。对于个人和企业，如何开发一个具有一定业务能力的Bot，一直是一个比较热门的话题。在这篇博客中，我将记录如何基于Microsoft Bot Framework为微信公众号添加一个智能对话机器人。<br><a id="more"></a></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在商业环境中，一个Bot不仅要有趣，还要有业务能力。一个优秀的Bot要有自然语言识别能力、上下文处理能力和在对话中实现业务的能力。例如，如果要开发一个Bot来处理一家咖啡店的订座服务，这个Bot需要像服务员一样能够理解客户的语言，了解客户的意图，获取语句中的关键信息（时间，数量，地点等），最后用对话方式在前台完成业务。<br>Microsoft Bot Framework提供了一套Bot开发的框架和工具，包括Azure Bot Service，Bot Builder SDK和相对丰富的Bot Channels。这套工具可以帮助开发者在短时间内开发出一个个人或企业级Bot。这套Framework可以轻松集成自然语言处理服务，认知服务并打通不同的沟通渠道（channels）。Bot Channels目前支持了不少流行的社交和通信应用，因此开发者只要开发一套Bot，就可以部署到不同的社交通信应用中，包括Facebook Pages、Microsoft Teams、Skype、Slack等等。<br><img src="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/what-is-bot.png" width="500"><br>微信朋友圈和公众号作为一个非常特殊的社交网络，内容非常丰富，但生态也相对封闭。给公众号加个Bot，让用户更自然地与公众号交流，说不定还挺好玩。目前Bot Channels并没有官方的支持微信和公众号Channel。公众号本身提供了基于关键字的自动回复功能，但是这个选项没法实现更多的业务功能。另一方面，公众号同时也提供了开发接口，可以把用户输入的消息转发到设定的服务器上，这给集成Bot服务提供了可能。这里主要记录一下如何通过公众号开发接口来接入Azure Bot Service。</p>
+<h1 id="公众号开发设置"><a href="#公众号开发设置" class="headerlink" title="公众号开发设置"></a>公众号开发设置</h1><p>首先需要申请注册公众号。然后接入微信公众平台开发，开发者需要按照如下步骤完成：<code>填写服务器配置</code>, <code>验证服务器地址的有效性</code>, <code>依据接口文档实现业务逻辑</code>。</p>
+<h2 id="填写服务器配置"><a href="#填写服务器配置" class="headerlink" title="填写服务器配置"></a>填写服务器配置</h2><img src="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/dev-config-1.png" width="500">
+<p>这里需要填写服务接口URL，注意这里微信开发平台会且只会给这个URL发送HTTP GET/POST请求，开发者无法定义更多API接口。Token可以随便填一个，在接下来的消息来源验证中会用到。EncodingAESKey可以随机生成一个，用以后面的消息加密。加密方式可以按需设置。</p>
+<h2 id="服务器验证"><a href="#服务器验证" class="headerlink" title="服务器验证"></a>服务器验证</h2><p>点击提交时，微信平台会立刻发送一个HTTP GET请求到设定的服务URL上，服务器必须的原样返回请求中所带的echostr才能通过验证。因此，在提交前，要保证你的的服务URL可以正常工作。这里我在Azure App Services上部署了一个基于ASP.NET Core的Web API应用，针对微信的验证请求原样返回echostr。<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet(<span class="meta-string">""</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">ReturnEchostr</span>(<span class="params">[FromQuery]<span class="keyword">string</span> signature, [FromQuery]<span class="keyword">string</span> nonce, [FromQuery]<span class="keyword">string</span> timestamp, [FromQuery]<span class="keyword">string</span> echostr</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (WXHelper.IsMessageFromWX(signature, nonce, timestamp, WxToken))</span><br><span class="line">    &#123;</span><br><span class="line">            <span class="keyword">return</span> echostr;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"Failed to authenticate the request"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据微信开发接入指南的规则来确认请求的来源</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsMessageFromWX</span>(<span class="params"><span class="keyword">string</span> signature, <span class="keyword">string</span> nonce, <span class="keyword">string</span> timestamp, <span class="keyword">string</span> wxToken</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">string</span>[] tempArr = &#123; nonce, timestamp, wxToken &#125;;</span><br><span class="line">    Array.Sort(tempArr);</span><br><span class="line">    <span class="keyword">string</span> tempStr = <span class="keyword">string</span>.Join(<span class="string">""</span>, tempArr);</span><br><span class="line">    <span class="keyword">var</span> sha1 = SHA1.Create();</span><br><span class="line">    <span class="keyword">byte</span>[] hashBytes = sha1.ComputeHash(Encoding.ASCII.GetBytes(tempStr));</span><br><span class="line">    <span class="keyword">string</span> calculatedSignature = BitConverter.ToString(hashBytes).Replace(<span class="string">"-"</span>, <span class="string">""</span>).ToLower();</span><br><span class="line">    <span class="keyword">return</span> calculatedSignature == signature;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>验证URL有效性成功后即接入生效，成为开发者。</p>
+<h1 id="服务开发"><a href="#服务开发" class="headerlink" title="服务开发"></a>服务开发</h1><h2 id="消息的转发"><a href="#消息的转发" class="headerlink" title="消息的转发"></a>消息的转发</h2><p>上面我们提到，Azure Bot Service没有官方的微信Channel，因此我们需要通过程序把用户在微信公众号中输入的消息转发给Bot。这里需要用到Bot的一个特殊Channel, <strong>Directline Channel</strong>。 Directline Channel支持开发者通过HTTP GET或者WebSocket stream来和Bot进行交互。所以，我们需要把服务器上收到的用户消息，通过Directline发送给Bot；再通过Directline获取Bot的回复，并把结果返回给用户。<br>这里需要注意的是：微信公众号不支持主动消息（特定动作交互除外，具体见<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140547" target="_blank" rel="noopener">这里</a>），必须是客户先说话，服务器紧接着只能回复一条消息，而通过Microsfot Bot Framework开发的Bot则没有这个要求。因此，在设计Bot的对话逻辑的时候，要注意兼容微信公众号的这种形式。服务器回复的消息内容为一个XML格式的字符串，文本消息的XML格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;xml&gt; &lt;ToUserName&gt;&lt; ![CDATA[toUser] ]&gt;&lt;/ToUserName&gt; &lt;FromUserName&gt;&lt; ![CDATA[fromUser] ]&gt;&lt;/FromUserName&gt; &lt;CreateTime&gt;12345678&lt;/CreateTime&gt; &lt;MsgType&gt;&lt; ![CDATA[text] ]&gt;&lt;/MsgType&gt; &lt;Content&gt;&lt; ![CDATA[你好] ]&gt;&lt;/Content&gt; &lt;/xml&gt;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>Bot端的功能开发我希望在另外一篇博客中详细的解释，这里用一个样例Bot作为接入演示。</p>
+<h2 id="DirectLine的配置"><a href="#DirectLine的配置" class="headerlink" title="DirectLine的配置"></a>DirectLine的配置</h2><p>在Azure Bot Service上， 需要开启DirectLine Channel并获取对应的接入Secret Key。<br><img src="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/bot-directline.png" width="500"></p>
+<h2 id="通过DirectLine接入Bot"><a href="#通过DirectLine接入Bot" class="headerlink" title="通过DirectLine接入Bot"></a>通过DirectLine接入Bot</h2><p>消息转发的功能同样在上面的.NET Core Web API应用中实现。我们可以用<code>Microsoft.Bot.Connector.DirectLine</code>来帮我们简化开发工作，避免手动的构造HTTP请求。在Directline中，一个完整的简单对话流程一般如下：</p>
+<ol>
+<li>Start Conversation（获取一个<code>conversation id</code>）</li>
+<li>Send an activity to the bot（向DirectLine的endpoint发送一个类型为<code>message</code>的<code>Activity</code>）</li>
+<li>Receive activities from the bot（通过<code>conversation id</code>从DirectLine的endpoint获取Bot的回复）</li>
+<li>End a conversation（结束对话）</li>
+</ol>
+<p>步骤2和3可以重复进行，不需要严格的一一对应。步骤3中，每一次的返回值除了有一个<code>activity Set</code>，还有一个<code>watermark</code>标识。再次向Bot请求回复时，可以带上之前获得的<code>watermark</code>，那么已经回复过的<code>activity</code>将不会出现在新的<code>activity set</code>中。作用类似TCP协议中的ACK，通过watermark标识可以保证Bot回复的消息不会丢失。<br>一个需要注意是，针对不同微信用户发过来的消息，需要建立不同的对话。可以维护一个<code>微信用户&lt;--&gt;服务器</code>和<code>服务器&lt;--&gt;Bot</code>两种对话之间的映射关系。样例代码如下：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WX Platform Will Post the Message to the Endpoint </span></span><br><span class="line">[<span class="meta">HttpPost(<span class="meta-string">""</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task&lt;<span class="keyword">string</span>&gt; <span class="title">WxPost</span>(<span class="params">[FromQuery]<span class="keyword">string</span> signature, [FromQuery]<span class="keyword">string</span> nonce, [FromQuery]<span class="keyword">string</span> timestamp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// WX Message Validataion</span></span><br><span class="line">    <span class="keyword">if</span> (WXHelper.IsMessageFromWX(signature, nonce, timestamp, WxToken))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">using</span> (<span class="keyword">var</span> reader = <span class="keyword">new</span> StreamReader(Request.Body))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> body = reader.ReadToEnd();</span><br><span class="line">            <span class="keyword">if</span> (String.IsNullOrEmpty(body))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"Failed to get message"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Parse WX Message</span></span><br><span class="line">            WXMsg msg = WXHelper.ParseWXMsgFromBodyString(body);</span><br><span class="line">            <span class="keyword">string</span> wxUserId = msg.FromUserName.Trim();</span><br><span class="line">            <span class="keyword">string</span> responseXML = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// In This Demo, We Only Care About Text Message</span></span><br><span class="line">            <span class="keyword">if</span> (msg.MsgType == WXMsgType.Text)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (!conMap.activeConversations.ContainsKey(wxUserId))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// Create a Directline Clint</span></span><br><span class="line">                    <span class="keyword">var</span> createdCon = <span class="keyword">await</span> botClient.Conversations.StartConversationAsync();</span><br><span class="line">                    conMap.activeConversations.Add(wxUserId, <span class="keyword">new</span> ConversationInfo(createdCon, <span class="string">""</span>));</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Create a Bot Message Activity</span></span><br><span class="line">                Activity userMessage = <span class="keyword">new</span> Activity</span><br><span class="line">                &#123;</span><br><span class="line">                    From = <span class="keyword">new</span> ChannelAccount(wxUserId),</span><br><span class="line">                    Text = msg.Content,</span><br><span class="line">                    Type = ActivityTypes.Message</span><br><span class="line">                &#125;;</span><br><span class="line">                </span><br><span class="line">                <span class="comment">// Post the message to Bot</span></span><br><span class="line">                <span class="keyword">var</span> thisConverstaionID = conMap.activeConversations[wxUserId].Conversation.ConversationId;</span><br><span class="line">                <span class="keyword">await</span> botClient.Conversations.PostActivityAsync(thisConverstaionID, userMessage);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Get the Activity Set from Bot</span></span><br><span class="line">                <span class="keyword">var</span> activitySet = <span class="keyword">await</span> botClient.Conversations.GetActivitiesAsync(thisConverstaionID, conMap.activeConversations[wxUserId].Waltermark);</span><br><span class="line">                conMap.activeConversations[wxUserId].Waltermark = activitySet.Watermark;</span><br><span class="line">                <span class="keyword">var</span> activities = <span class="keyword">from</span> x <span class="keyword">in</span> activitySet.Activities</span><br><span class="line">                                 <span class="keyword">where</span> x.From.Id == botId</span><br><span class="line">                                 <span class="keyword">select</span> x;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Porcess the Activities</span></span><br><span class="line">                <span class="keyword">var</span> returnString = <span class="string">""</span>;</span><br><span class="line">                <span class="keyword">foreach</span> (Activity activity <span class="keyword">in</span> activities)</span><br><span class="line">                &#123;</span><br><span class="line">                    returnString += activity.Text + <span class="string">"||"</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                responseXML = WXHelper.ConstructWXTextMessage(msg, returnString);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> responseXML;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在公众号上测试效果：<br><img src="/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/official-account-test.png" width="300"><br>至此，用户已经可以和公众号的Bot进行对话，Bot也能正确识别和记录对话的状态。在后面的博客中，我将记录Bot端更多功能的实现。</p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/azure/bot-service/?view=azure-bot-service-4.0" target="_blank" rel="noopener">Azure Bot Service Documentation</a></li>
+<li><a href="https://www.cnblogs.com/sonic1abc/p/5941442.html" target="_blank" rel="noopener">如何将 Microsoft Bot Framework 链接至微信公共号</a></li>
+<li><a href="https://github.com/Microsoft/BotBuilder-Samples/tree/v3-sdk-samples/CSharp/core-DirectLine" target="_blank" rel="noopener">Direct Line Bot Sample</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/" title="给微信公众号加个Bot（一）">http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Azure/" rel="tag"># Azure</a>
+          
+            <a href="/tags/Microsoft-Bot-Framework/" rel="tag"># Microsoft Bot Framework</a>
+          
+            <a href="/tags/WeChat/" rel="tag"># WeChat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/Missing-Fullscreen-Button-on-HTML5-Video-Player/" rel="next" title="Missing Fullscreen Button on HTML5 Video Player">
+                <i class="fa fa-chevron-left"></i> Missing Fullscreen Button on HTML5 Video Player
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/Understanding-Microsoft-Bot-Framework-1/" rel="prev" title="理解Microsoft Bot Framework（一）：BotBuilder">
+                理解Microsoft Bot Framework（一）：BotBuilder <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#公众号开发设置"><span class="nav-number">2.</span> <span class="nav-text">公众号开发设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#填写服务器配置"><span class="nav-number">2.1.</span> <span class="nav-text">填写服务器配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器验证"><span class="nav-number">2.2.</span> <span class="nav-text">服务器验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务开发"><span class="nav-number">3.</span> <span class="nav-text">服务开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息的转发"><span class="nav-number">3.1.</span> <span class="nav-text">消息的转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DirectLine的配置"><span class="nav-number">3.2.</span> <span class="nav-text">DirectLine的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过DirectLine接入Bot"><span class="nav-number">3.3.</span> <span class="nav-text">通过DirectLine接入Bot</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2019/How-to-Create-a-Bot-for-Wechat-Official-Account/";
+        this.page.identifier = "2019/How-to-Create-a-Bot-for-Wechat-Official-Account/";
+        this.page.title = '给微信公众号加个Bot（一）';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

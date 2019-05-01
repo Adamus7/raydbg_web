@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content=".NET Core is designed to be cross-platform, modular and optimized for cloud. What if there is a exception or a memory issue of a .NET Core application on Linux platform? On Windows, we have a set of t">
+<meta name="keywords" content=".NET Core,Debugging,LLDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debugging .NET Core on Linux with LLDB">
+<meta property="og:url" content="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content=".NET Core is designed to be cross-platform, modular and optimized for cloud. What if there is a exception or a memory issue of a .NET Core application on Linux platform? On Windows, we have a set of t">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/appach-to-a-process.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/load-sos-plugin.png">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Debugging .NET Core on Linux with LLDB">
+<meta name="twitter:description" content=".NET Core is designed to be cross-platform, modular and optimized for cloud. What if there is a exception or a memory issue of a .NET Core application on Linux platform? On Windows, we have a set of t">
+<meta name="twitter:image" content="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/appach-to-a-process.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Debugging .NET Core on Linux with LLDB | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Debugging .NET Core on Linux with LLDB
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-05-18 15:18:33" itemprop="dateCreated datePublished" datetime="2018-05-18T15:18:33+08:00">2018-05-18</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/Debugging-Net-Core-on-Linux-with-LLDB/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/Debugging-Net-Core-on-Linux-with-LLDB/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>.NET Core is designed to be cross-platform, modular and optimized for cloud. What if there is a exception or a memory issue of a .NET Core application on Linux platform? On Windows, we have a set of tools to do different analysis. For example, I can take a process dump by ProcDump and feed it to WinDBG for exception or memory analysis.<br>Actually, we can do similar things on Linux for .NET Core application now.<br><a id="more"></a></p>
+<h1 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h1><p>Simply, here is a cheat sheet of the different tools on Windows and Linux:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Linux</th>
+<th>Windows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU sampling</td>
+<td>perf, BCC</td>
+<td>ETW</td>
+</tr>
+<tr>
+<td>Dynamic tracing</td>
+<td>perf, BCC</td>
+<td>X</td>
+</tr>
+<tr>
+<td>Static tracing</td>
+<td>LTTng</td>
+<td>ETW</td>
+</tr>
+<tr>
+<td>Dump generation</td>
+<td>gcore, ProcDump</td>
+<td>ProcDump, WER</td>
+</tr>
+<tr>
+<td>Dump anlysis</td>
+<td>LLDB</td>
+<td>VS, WinDBG</td>
+</tr>
+</tbody>
+</table>
+<h2 id="LLDB"><a href="#LLDB" class="headerlink" title="LLDB"></a>LLDB</h2><p>The LLDB debugger is conceptually similar to the native Windows debugging tools in that it is a low level and command live driven debugger. It is available for a number of different *NIX systems as well as MacOS. Part of the reason the .NET Core team chose the LLDB debugger was for its extensibility points that allowed them to create the SOS plugin which can be used to debug .NET core applications. The SOS LLDB plugin contains the same commands that we have grown accustomed to in the Windows world. Therefore, LLDB is the ideal debugger for .NET Core on Linux.<br>For .NET Core version 1.x and 2.0.x, libsosplugin.so is built for and will only work with version 3.6 of LLDB. For .NET Core 2.1, the plugin is built for 3.9 LLDB and will work with 3.8 and 3.9 LLDB.<br>So you need to download and install correct version of LLDB into the box.<br><a href="https://lldb.llvm.org/download.html" target="_blank" rel="noopener">Install instruction for LLDB</a>.</p>
+<h2 id="ProcDump-for-Linux"><a href="#ProcDump-for-Linux" class="headerlink" title="ProcDump for Linux"></a>ProcDump for Linux</h2><p>Microsoft has shipped ProcDump to Linux which provides a convenient way for Linux developers to create core dumps of their application based on performance triggers. Eventually, the ProcDump will call gcore on Linux to generate the core dump. It is convenient not only because it will help you to install and setup gcore automatically, but also helps to monitor the application and capture core dump automatically based on specific trigger conditions.<br><a href="https://github.com/Microsoft/ProcDump-for-Linux" target="_blank" rel="noopener">Install instruction for ProcDump of Linux</a>.</p>
+<h2 id="SOS-plugin-for-LLDB"><a href="#SOS-plugin-for-LLDB" class="headerlink" title="SOS plugin for LLDB"></a>SOS plugin for LLDB</h2><p>The SOS Debugging Extension helps you debug managed programs in debugger by providing information about the internal Common Language Runtime (CLR) environment. The .NET Core team also bring this available on Linux for LLDB.<br>On Linux, the SOS plugin shipped with .NET Core SDK, you can find it here: <em>/usr/share/dotnet/shared/Microsoft.NETCore.App/2.0.0/libsosplugin.so</em></p>
+<h1 id="Debug-It"><a href="#Debug-It" class="headerlink" title="Debug It"></a>Debug It</h1><h2 id="Attach-to-a-process"><a href="#Attach-to-a-process" class="headerlink" title="Attach to a process"></a>Attach to a process</h2><p>Find the pid of the dotnet application, then launch LLDB and type: <code>process attach -p &lt;PID&gt;</code> to attach the debugger to your dotnet core application.<br>Once LLDB is attached, the output will show all the frames from the currently selected thread, but it only will show the native frames.<br><img src="/2018/Debugging-Net-Core-on-Linux-with-LLDB/appach-to-a-process.png" width="500"></p>
+<h2 id="Loading-SOS-plugin"><a href="#Loading-SOS-plugin" class="headerlink" title="Loading SOS plugin"></a>Loading SOS plugin</h2><p>At the LLDB prompt, type: <code>plugin load libsosplugin.so</code>.<br>Then type: <code>clrstack</code>. You will see clearly what managed code is being executed for that thread.<br><img src="/2018/Debugging-Net-Core-on-Linux-with-LLDB/load-sos-plugin.png" width="500"></p>
+<h2 id="Capture-Core-Dumps-by-ProcDump-for-Linux"><a href="#Capture-Core-Dumps-by-ProcDump-for-Linux" class="headerlink" title="Capture Core Dumps by ProcDump for Linux"></a>Capture Core Dumps by ProcDump for Linux</h2><p>As with any debug session that involves production running applications, it is not a first choice to live attaching to the process. Similar to Windows, Linux utilizes a approach to postmortem debugging with core dumps (memory dump).<br>In order to enable core dumps generation, type: <code>ulimit -c unlimited</code> in terminal. This command sets the generated maximum core file size to unlimited in current terminal session.<br>To generate core dump using ProcDump, type: <code>sudo procdump [options] -p &lt;PID of the app&gt;</code>. You can use the options for ProcDump as below:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Usage: procdump [OPTIONS...] TARGET</span><br><span class="line">   OPTIONS</span><br><span class="line">      -C          CPU threshold at which to create a dump of the process from 0 to 100 * nCPU</span><br><span class="line">      -c          CPU threshold below which to create a dump of the process from 0 to 100 * nCPU</span><br><span class="line">      -M          Memory commit threshold in MB at which to create a dump</span><br><span class="line">      -m          Trigger when memory commit drops below specified MB value.</span><br><span class="line">      -n          Number of dumps to write before exiting</span><br><span class="line">      -s          Consecutive seconds before dump is written (default is 10)</span><br><span class="line">   TARGET must be exactly one of these:</span><br><span class="line">      -p          pid of the process</span><br></pre></td></tr></table></figure></p>
+<h2 id="Open-the-dump-in-LLDB"><a href="#Open-the-dump-in-LLDB" class="headerlink" title="Open the dump in LLDB"></a>Open the dump in LLDB</h2><p>Launch LLDB and type in prompt: <code>target create -c &lt;dump file path&gt;</code><br>Load SOS plugin type any command you need for the memory analysis. The available command are list below:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">Type &quot;soshelp &lt;functionname&gt;&quot; for detailed info on that function.</span><br><span class="line"></span><br><span class="line">Object Inspection                  Examining code and stacks</span><br><span class="line">-----------------------------      -----------------------------</span><br><span class="line">DumpObj (dumpobj)                  Threads (clrthreads)</span><br><span class="line">DumpArray                          ThreadState</span><br><span class="line">DumpStackObjects (dso)             IP2MD (ip2md)</span><br><span class="line">DumpHeap (dumpheap)                u (clru)</span><br><span class="line">DumpVC                             DumpStack (dumpstack)</span><br><span class="line">GCRoot (gcroot)                    EEStack (eestack)</span><br><span class="line">PrintException (pe)                ClrStack (clrstack)</span><br><span class="line">                                   GCInfo</span><br><span class="line">                                   EHInfo</span><br><span class="line">                                   bpmd (bpmd)</span><br><span class="line"></span><br><span class="line">Examining CLR data structures      Diagnostic Utilities</span><br><span class="line">-----------------------------      -----------------------------</span><br><span class="line">DumpDomain                         VerifyHeap</span><br><span class="line">EEHeap (eeheap)                    FindAppDomain</span><br><span class="line">Name2EE (name2ee)                  DumpLog (dumplog)</span><br><span class="line">DumpMT (dumpmt)                    CreateDump (createdump)</span><br><span class="line">DumpClass (dumpclass)</span><br><span class="line">DumpMD (dumpmd)</span><br><span class="line">Token2EE</span><br><span class="line">DumpModule (dumpmodule)</span><br><span class="line">DumpAssembly</span><br><span class="line">DumpRuntimeTypes</span><br><span class="line">DumpIL (dumpil)</span><br><span class="line">DumpSig</span><br><span class="line">DumpSigElem</span><br><span class="line"></span><br><span class="line">Examining the GC history           Other</span><br><span class="line">-----------------------------      -----------------------------</span><br><span class="line">HistInit (histinit)                FAQ</span><br><span class="line">HistRoot (histroot)                Help (soshelp)</span><br><span class="line">HistObj  (histobj)</span><br><span class="line">HistObjFind (histobjfind)</span><br><span class="line">HistClear (histclear)</span><br></pre></td></tr></table></figure></p>
+<h1 id="Profiling-the-NET-Core-Application-on-Linux"><a href="#Profiling-the-NET-Core-Application-on-Linux" class="headerlink" title="Profiling the .NET Core Application on Linux"></a>Profiling the .NET Core Application on Linux</h1><p>To gather detailed information about a performance issue of .NET Core  Application on Linux, you can follow the simple instructions here:</p>
+<ol>
+<li>Download <a href="https://github.com/dotnet/coreclr/blob/master/Documentation/project-docs/linux-performance-tracing.md" target="_blank" rel="noopener">perfcollect</a> script provided by .NET Core team.<br><code>curl -OL http://aka.ms/perfcollect</code></li>
+<li>Make the script executable.<br><code>chmod +x perfcollect</code></li>
+<li>Install prerequisites (perf and LTTng):<br><code>sudo ./perfcollect install</code></li>
+<li>Setup the application shell and enables tracing configuration:<br><code>export COMPlus_PerfMapEnabled=1</code><br><code>export COMPlus_EnableEventLog=1</code></li>
+<li>Run collection:<br><code>./perfcollect collect tracefile</code></li>
+<li>Copy the tracefile.zip file to a <strong>Windows</strong> machine.</li>
+<li>Download <a href="https://www.microsoft.com/en-us/download/details.aspx?id=28567" target="_blank" rel="noopener">PerfView</a> on Windows box.</li>
+<li>Open the trace in PerfView, then you can explore the CPU sampling data. Flame Graph is also available here.<br>Using <a href="https://github.com/iovisor/bcc" target="_blank" rel="noopener">BPF Complier Collection (BCC)</a> is another good choice for performance analysis as BPF is more flexible and efficiency. Please follow the <a href="https://github.com/iovisor/bcc/blob/master/docs/tutorial.md" target="_blank" rel="noopener">tutorial of BCC</a>.</li>
+</ol>
+<p>Reference:</p>
+<ul>
+<li><a href="https://github.com/dotnet/coreclr/blob/master/Documentation/project-docs/linux-performance-tracing.md" target="_blank" rel="noopener">Performance Tracing on Linux</a></li>
+<li><a href="https://github.com/dotnet/coreclr/blob/master/Documentation/building/debugging-instructions.md" target="_blank" rel="noopener">Debugging CoreCLR</a></li>
+<li><a href="http://blogs.microsoft.co.il/sasha/2017/02/26/analyzing-a-net-core-core-dump-on-linux/" target="_blank" rel="noopener">Analyzing a .NET Core Core Dump on Linux </a></li>
+<li><a href="https://github.com/Microsoft/ProcDump-for-Linux" target="_blank" rel="noopener">ProcDump for Linux</a></li>
+<li><a href="https://codeblog.dotsandbrackets.com/net-core-memory-linux/" target="_blank" rel="noopener">Analyzing .NET Core memory on Linux with LLDB</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/premier_developer/2017/05/02/debugging-net-core-with-sos-everywhere/" target="_blank" rel="noopener">Debugging .NET core with SOS everywhere</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/" title="Debugging .NET Core on Linux with LLDB">http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NET-Core/" rel="tag"># .NET Core</a>
+          
+            <a href="/tags/Debugging/" rel="tag"># Debugging</a>
+          
+            <a href="/tags/LLDB/" rel="tag"># LLDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/How-to-initiate-outbound-messages-from-Skype-for-Business-bots-to-users/" rel="next" title="How to Initiate Outbound Messages from Bot to Skype for Business User">
+                <i class="fa fa-chevron-left"></i> How to Initiate Outbound Messages from Bot to Skype for Business User
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/" rel="prev" title="Host Your Bot in Azure Functions (Node.JS)">
+                Host Your Bot in Azure Functions (Node.JS) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tools"><span class="nav-number">1.</span> <span class="nav-text">Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LLDB"><span class="nav-number">1.1.</span> <span class="nav-text">LLDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ProcDump-for-Linux"><span class="nav-number">1.2.</span> <span class="nav-text">ProcDump for Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SOS-plugin-for-LLDB"><span class="nav-number">1.3.</span> <span class="nav-text">SOS plugin for LLDB</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Debug-It"><span class="nav-number">2.</span> <span class="nav-text">Debug It</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Attach-to-a-process"><span class="nav-number">2.1.</span> <span class="nav-text">Attach to a process</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loading-SOS-plugin"><span class="nav-number">2.2.</span> <span class="nav-text">Loading SOS plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Capture-Core-Dumps-by-ProcDump-for-Linux"><span class="nav-number">2.3.</span> <span class="nav-text">Capture Core Dumps by ProcDump for Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Open-the-dump-in-LLDB"><span class="nav-number">2.4.</span> <span class="nav-text">Open the dump in LLDB</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Profiling-the-NET-Core-Application-on-Linux"><span class="nav-number">3.</span> <span class="nav-text">Profiling the .NET Core Application on Linux</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2018/Debugging-Net-Core-on-Linux-with-LLDB/";
+        this.page.identifier = "2018/Debugging-Net-Core-on-Linux-with-LLDB/";
+        this.page.title = 'Debugging .NET Core on Linux with LLDB';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

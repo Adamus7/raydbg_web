@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Several years ago when I was in college, I used Matlab to study Machine Learning. I just would like to pick up Deep Learning again to catch up the AI trend. The first step is to set up the tools and e">
+<meta name="keywords" content="Deep Learning,AI,Anaconda,Jupyter Notebook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow">
+<meta property="og:url" content="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="Several years ago when I was in college, I used Matlab to study Machine Learning. I just would like to pick up Deep Learning again to catch up the AI trend. The first step is to set up the tools and e">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/kernel-new.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/kernel-error.png">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow">
+<meta name="twitter:description" content="Several years ago when I was in college, I used Matlab to study Machine Learning. I just would like to pick up Deep Learning again to catch up the AI trend. The first step is to set up the tools and e">
+<meta name="twitter:image" content="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/kernel-new.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-24 23:34:30" itemprop="dateCreated datePublished" datetime="2018-12-24T23:34:30+08:00">2018-12-24</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/Setup-Deep-Learning-Envrionment/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/Setup-Deep-Learning-Envrionment/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Several years ago when I was in college, I used Matlab to study Machine Learning. I just would like to pick up Deep Learning again to catch up the AI trend. The first step is to set up the tools and environment. In this post I will share how to set up my Deep Learning environment with Anaconda and Jupyter Notebook, and then install TensorFlow.<br><a id="more"></a></p>
+<h1 id="Why-Jupyter-Notebook-and-Anaconda"><a href="#Why-Jupyter-Notebook-and-Anaconda" class="headerlink" title="Why Jupyter Notebook and Anaconda"></a>Why Jupyter Notebook and Anaconda</h1><p>Jupyter Notebook is not a pre-requisite for Deep Learning, but it is really helpful to create rich documents that contain live code, equations, visualizations and narrative text for your experiment. It is just like a white broad where you can put your idea on and continuously evolve the project code.<br>Anaconda a platform which can help you to create virtual environments and install packages needed for data science and deep learning. As you may know, version conflict is quite normal in Python/DL world because different Deep Learning frameworks may require different projects or packages. I tried with native Python and pip environment before, but it is really a nightmare for me. With virtual environments I can install specific package versions for a particular project or a tutorial without worrying about the annoying version conflicts.</p>
+<h1 id="Install-Anaconda-and-Create-Virtual-Environment"><a href="#Install-Anaconda-and-Create-Virtual-Environment" class="headerlink" title="Install Anaconda and Create Virtual Environment"></a>Install Anaconda and Create Virtual Environment</h1><p>Download Anaconda for your platform from <a href="https://www.anaconda.com/download/" target="_blank" rel="noopener">here</a>. Anaconda Distribution has Conda package manager and thousands packages integrated. After installation, I created a virtual environment as below:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Update conda</span></span><br><span class="line">(base) $ conda upgrade conda</span><br><span class="line">(base) $ conda upgrade --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a new environment with Python 3.6</span></span><br><span class="line">(base) $ conda create -n my-env python=3.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># Switching or moving between environments is called activating the environment.</span></span><br><span class="line"><span class="comment"># Activate the environment. On Windows, use activate.  </span></span><br><span class="line">(base) $ activate my-env</span><br><span class="line"></span><br><span class="line"><span class="comment"># Take a look at the environments</span></span><br><span class="line">(my-env) $ conda info --envs</span><br><span class="line">(my-env) $ conda list</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install a package with conda and verify it's installed</span></span><br><span class="line">(my-env) $ conda install &lt;package-name&gt;</span><br><span class="line">(my-env) $ conda list</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install a package with pip and verify it's installed</span></span><br><span class="line">(my-env) $ pip install &lt;package-name&gt;</span><br><span class="line">(my-env) $ pip list</span><br><span class="line">(my-env) $ conda list</span><br></pre></td></tr></table></figure></p>
+<p>For more details, check the <a href="https://conda.io/docs/user-guide/tasks/manage-environments.html" target="_blank" rel="noopener">document</a>.</p>
+<h1 id="Setup-Jupyter-Notebook-Kernels-for-Specific-Environment"><a href="#Setup-Jupyter-Notebook-Kernels-for-Specific-Environment" class="headerlink" title="Setup Jupyter Notebook Kernels for Specific Environment."></a>Setup Jupyter Notebook Kernels for Specific Environment.</h1><p>A ‘kernel’ of Jupyter Notebook is a program that runs and introspects the user’s code. If you want to have multiple IPython kernels for different virtualenvs or conda environments in Jupyter, you will need to specify unique names for the kernelspecs.<br>Please note, the default kernel and python executable file of Jupyter is listed in base environment.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python in my-env</span></span><br><span class="line">(my-env) $ python --version</span><br><span class="line">Python 3.6.7 :: Anaconda, Inc.</span><br><span class="line"></span><br><span class="line"><span class="comment"># Python in base-env</span></span><br><span class="line">(my-env) $ activate base</span><br><span class="line">(base) $ python --version</span><br><span class="line">Python 3.7.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install IPython in my-env</span></span><br><span class="line">(base) $ activate my-env</span><br><span class="line">(my-env) conda install ipykernel <span class="comment"># or pip install ipykernel</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Install the Kernel</span></span><br><span class="line">(my-env) $ python -m ipykernel install --user --name py36-env --display-name <span class="string">"Python 3.6"</span></span><br></pre></td></tr></table></figure></p>
+<p>Start the Jupyter Notebook and you will find the new created kernel:<br><img src="/2018/Setup-Deep-Learning-Envrionment/kernel-new.png" width="200"></p>
+<p>For more details, check the <a href="https://ipython.readthedocs.io/en/stable/install/kernel_install.html" target="_blank" rel="noopener">document</a>.</p>
+<h2 id="Update-Use-nb-conda-Extension-to-Manage-Kernels"><a href="#Update-Use-nb-conda-Extension-to-Manage-Kernels" class="headerlink" title="Update: Use nb_conda Extension to Manage Kernels"></a>Update: Use nb_conda Extension to Manage Kernels</h2><p><a href="https://github.com/Anaconda-Platform/nb_conda" target="_blank" rel="noopener">nb_conda</a> Provides Conda environment and package access extension from within Jupyter. This extension adds a Conda Packages item to the Kernel menu. Selecting this item displays the list of Conda packages in the environment associated with the running kernel, and the list of available packages. You can perform the same actions as in the Conda tab, but only against the current environment.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install nb_conda</span></span><br><span class="line">conda install nb_conda</span><br></pre></td></tr></table></figure></p>
+<h1 id="Install-TensorFlow"><a href="#Install-TensorFlow" class="headerlink" title="Install TensorFlow"></a>Install TensorFlow</h1><p>We choose TensorFlow GPU support version. Follow the <a href="https://www.tensorflow.org/install/gpu" target="_blank" rel="noopener">instruction</a> to install the pre-requisites.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install tensorflow via pip</span></span><br><span class="line">(my-env) $ pip install tensorflow-gpu</span><br><span class="line"></span><br><span class="line"><span class="comment"># Verify the installation</span></span><br><span class="line">(my-env) $ python</span><br><span class="line">Python 3.6.7 |Anaconda, Inc.| (default, Dec 10 2018, 20:35:02) [MSC v.1915 64 bit (AMD64)] on win32</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; import tensorflow as tf</span><br><span class="line">&gt;&gt;&gt; tf.__version__</span><br><span class="line"><span class="string">'1.12.0'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h1><h2 id="1-Conda-Install-or-Pip-Install"><a href="#1-Conda-Install-or-Pip-Install" class="headerlink" title="1. Conda Install or Pip Install"></a>1. Conda Install or Pip Install</h2><p>Pip is focused around Python. It is a package manager that facilitates installation, upgrade, and uninstallation of python packages. But Conda is a packaging tool and installer for any software that aims to do more than what pip does; handle library dependencies outside of the Python packages as well as the Python packages themselves.</p>
+<h2 id="2-ModuleNotFound-Error-Troubleshooting"><a href="#2-ModuleNotFound-Error-Troubleshooting" class="headerlink" title="2. ModuleNotFound Error Troubleshooting"></a>2. ModuleNotFound Error Troubleshooting</h2><p>You may hit <code>ModuleNotFoundError: No module named &#39;lightgbm&#39;</code> sometimes.<br>Check the sys.executable in Jupyter Notebook to verify the kernel path first:<br><img src="/2018/Setup-Deep-Learning-Envrionment/kernel-error.png" width="600"><br>Or you can check the kernel spec via command <code>jupyter kernelspec list</code>.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(my-env) $ jupyter kernelspec list</span><br><span class="line">Available kernels:</span><br><span class="line">  py36-env    C:\Users\yuray\AppData\Roaming\jupyter\kernels\py36-env</span><br><span class="line">  python3     C:\Users\yuray\AppData\Local\Continuum\anaconda3\envs\py36-env\share\jupyter\kernels\python3</span><br></pre></td></tr></table></figure></p>
+<p>Then check the package installation status using <code>conda list</code>:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(my-env) $ conda list</span><br><span class="line"><span class="comment"># packages in environment at C:\Users\yuray\AppData\Local\Continuum\anaconda3\envs\py36-env:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Name                    Version                   Build  Channel</span></span><br><span class="line">_tflow_select             2.1.0                       gpu</span><br><span class="line">absl-py                   0.6.1                    py36_0</span><br><span class="line">absl-py                   0.6.1                     &lt;pip&gt;</span><br><span class="line">astor                     0.7.1                    py36_0</span><br><span class="line">backcall                  0.1.0                    py36_0</span><br><span class="line">blas                      1.0                         mkl</span><br><span class="line">ca-certificates           2018.03.07                    0</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://medium.com/@margaretmz/anaconda-jupyter-notebook-tensorflow-and-keras-b91f381405f8" target="_blank" rel="noopener">Anaconda, Jupyter Notebook, TensorFlow and Keras for Deep Learning</a></li>
+<li><a href="https://github.com/jupyter/jupyter/issues/270" target="_blank" rel="noopener">Jupyter running wrong python kernel</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/" title="Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow">http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+          
+            <a href="/tags/Jupyter-Notebook/" rel="tag"># Jupyter Notebook</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/Debugging-ASP-NET-Core-Application-with-Framework-Source-Code/" rel="next" title="Debugging ASP.NET Core Application with Framework Source Code">
+                <i class="fa fa-chevron-left"></i> Debugging ASP.NET Core Application with Framework Source Code
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/My-Exploratory-Data-Analysis-for-Microsoft-Malware-Prediction/" rel="prev" title="My Exploratory Data Analysis for Microsoft Malware Prediction">
+                My Exploratory Data Analysis for Microsoft Malware Prediction <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Why-Jupyter-Notebook-and-Anaconda"><span class="nav-number">1.</span> <span class="nav-text">Why Jupyter Notebook and Anaconda</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install-Anaconda-and-Create-Virtual-Environment"><span class="nav-number">2.</span> <span class="nav-text">Install Anaconda and Create Virtual Environment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Setup-Jupyter-Notebook-Kernels-for-Specific-Environment"><span class="nav-number">3.</span> <span class="nav-text">Setup Jupyter Notebook Kernels for Specific Environment.</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Update-Use-nb-conda-Extension-to-Manage-Kernels"><span class="nav-number">3.1.</span> <span class="nav-text">Update: Use nb_conda Extension to Manage Kernels</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install-TensorFlow"><span class="nav-number">4.</span> <span class="nav-text">Install TensorFlow</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Notes"><span class="nav-number">5.</span> <span class="nav-text">Notes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Conda-Install-or-Pip-Install"><span class="nav-number">5.1.</span> <span class="nav-text">1. Conda Install or Pip Install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-ModuleNotFound-Error-Troubleshooting"><span class="nav-number">5.2.</span> <span class="nav-text">2. ModuleNotFound Error Troubleshooting</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/";
+        this.page.identifier = "2018/Setup-Deep-Learning-Envrionment/";
+        this.page.title = 'Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

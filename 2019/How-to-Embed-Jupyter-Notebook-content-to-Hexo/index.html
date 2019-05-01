@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Jupyter Notebook is a flexible tool that helps you create readable analyses which can keep code, images, comments, formulae and plots together. I also would like to make a post to discuss an data anal">
+<meta name="keywords" content="Jupyter Notebook,Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Embed Jupyter Notebook into Hexo Post">
+<meta property="og:url" content="http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="Jupyter Notebook is a flexible tool that helps you create readable analyses which can keep code, images, comments, formulae and plots together. I also would like to make a post to discuss an data anal">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.121Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Embed Jupyter Notebook into Hexo Post">
+<meta name="twitter:description" content="Jupyter Notebook is a flexible tool that helps you create readable analyses which can keep code, images, comments, formulae and plots together. I also would like to make a post to discuss an data anal">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Embed Jupyter Notebook into Hexo Post | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Embed Jupyter Notebook into Hexo Post
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-04 15:30:01" itemprop="dateCreated datePublished" datetime="2019-01-04T15:30:01+08:00">2019-01-04</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Jupyter Notebook is a flexible tool that helps you create readable analyses which can keep code, images, comments, formulae and plots together. I also would like to make a post to discuss an data analyses result using markdown in my Hexo blog system. In this blog, I will share how to embed the content of Jupyter Notebook into Hexo using markdown format.<br><a id="more"></a></p>
+<h1 id="Useful-Ideas"><a href="#Useful-Ideas" class="headerlink" title="Useful Ideas"></a>Useful Ideas</h1><p>There are several existing solutions on the Internet:</p>
+<ul>
+<li>.ipynb -&gt; .md -&gt; Copy the content of .md into a Hexo post;</li>
+<li>.ipynb -&gt; .html -&gt; Reference the HTML file in a Hexo post;</li>
+<li>.ipynb -&gt; .html -&gt; Embed the HTML file in a iFrame;</li>
+<li>.ipynb -&gt; .pdf -&gt; Embed the pdf file in a Hexo post using PDF tag.</li>
+</ul>
+<p>However, I’m just not satisficed with any of them because of the inconsistent format and style.</p>
+<h1 id="My-Solution"><a href="#My-Solution" class="headerlink" title="My Solution"></a>My Solution</h1><p>During my testing, for solution 1, the only biggest problem is Hexo cannot render the DataFrame table very well as it is a raw HTML code in markdown file. Probably we can make it better.</p>
+<h2 id="Convert-ipynb-to-md"><a href="#Convert-ipynb-to-md" class="headerlink" title="Convert .ipynb to .md"></a>Convert .ipynb to .md</h2><p>Run the following command to convert .ipynb file from Jupyter Notebook format to a markdown file.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbconvert --to markdown  notebook.ipynb</span><br></pre></td></tr></table></figure></p>
+<p>Two new items will be created after running the command:</p>
+<ul>
+<li><code>notebook.md</code>: a new markdown file;</li>
+<li><code>notebook_files</code>: a folder containing all the images in the notebook.</li>
+</ul>
+<h2 id="Embed-in-a-Hexo-Post"><a href="#Embed-in-a-Hexo-Post" class="headerlink" title="Embed in a Hexo Post"></a>Embed in a Hexo Post</h2><p>Create a new post in Hexo and copy the content of notebook.md to the post body.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">layout: &apos;[post]&apos;</span><br><span class="line">title: New Blog Post</span><br><span class="line">---</span><br><span class="line">&lt;Copy the content to here&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Next, move the notebook_files folder to the resource folder of the post. Edit the image tag in Hexo post and point it to correct path.</p>
+<h3 id="Fix-the-DataFrame-Table-Display-Issue"><a href="#Fix-the-DataFrame-Table-Display-Issue" class="headerlink" title="Fix the DataFrame Table Display Issue"></a>Fix the DataFrame Table Display Issue</h3><p>You may notice that DataFrame table is transformed into HTLM format in the markdown file. It seems to be a known issue in Hexo that raw HTLM table code always having problem to be rendered properly. In Hexo, If certain content is causing processing issues, wrap it with the <code>raw</code> tag to avoid rendering errors. Therefore, To fix the problem, just add a pair of <code>raw</code> tags to wrap the DataFrame section.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% raw %&#125;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;style scoped&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Pretty-Tables"><a href="#Pretty-Tables" class="headerlink" title="Pretty Tables"></a>Pretty Tables</h3><p>Next, add some CSS code to format the DataFrame tables appropriately. I’m using <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">Next Theme</a> of Hexo which provides a global option for customized CSS code.<br>Add the customized CSS code in <code>themes\next\source\css\_costom\custome.styl</code>. This change will take effect for all DataFrame tables in all posts.<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// beauty DataFrame </span><br><span class="line"><span class="selector-tag">table</span><span class="selector-class">.dataframe</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">240px</span>;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">overflow</span>: auto;</span><br><span class="line">    <span class="attribute">font-family</span>: Arial, sans-serif;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">13px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">table</span><span class="selector-class">.dataframe</span> <span class="selector-tag">th</span> &#123;</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">border-bottom</span>: <span class="number">0px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">table</span><span class="selector-class">.dataframe</span> <span class="selector-tag">td</span> &#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">4px</span>;</span><br><span class="line">  <span class="attribute">border-bottom</span>: <span class="number">0px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">table</span><span class="selector-class">.dataframe</span> <span class="selector-tag">tr</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#b8d1f3</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Done. Here is a sample DataFrame table:</p>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Total</th>
+      <th>Percent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>PuaMode</th>
+      <td>8919174</td>
+      <td>99.974119</td>
+    </tr>
+    <tr>
+      <th>Census_ProcessorClass</th>
+      <td>8884852</td>
+      <td>99.589407</td>
+    </tr>
+    <tr>
+      <th>DefaultBrowsersIdentifier</th>
+      <td>8488045</td>
+      <td>95.141637</td>
+    </tr>
+    <tr>
+      <th>Census_IsFlightingInternal</th>
+      <td>7408759</td>
+      <td>83.044030</td>
+    </tr>
+    <tr>
+      <th>Census_InternalBatteryType</th>
+      <td>6338429</td>
+      <td>71.046809</td>
+    </tr>
+    <tr>
+      <th>Census_ThresholdOptIn</th>
+      <td>5667325</td>
+      <td>63.524472</td>
+    </tr>
+    <tr>
+      <th>Census_IsWIMBootEnabled</th>
+      <td>5659703</td>
+      <td>63.439038</td>
+    </tr>
+    <tr>
+      <th>SmartScreen</th>
+      <td>3177011</td>
+      <td>35.610795</td>
+    </tr>
+    <tr>
+      <th>OrganizationIdentifier</th>
+      <td>2751518</td>
+      <td>30.841487</td>
+    </tr>
+    <tr>
+      <th>SMode</th>
+      <td>537759</td>
+      <td>6.027686</td>
+    </tr>
+    <tr>
+      <th>CityIdentifier</th>
+      <td>325409</td>
+      <td>3.647477</td>
+    </tr>
+    <tr>
+      <th>Wdft_IsGamer</th>
+      <td>303451</td>
+      <td>3.401352</td>
+    </tr>
+    <tr>
+      <th>Wdft_RegionIdentifier</th>
+      <td>303451</td>
+      <td>3.401352</td>
+    </tr>
+    <tr>
+      <th>Census_InternalBatteryNumberOfCharges</th>
+      <td>268755</td>
+      <td>3.012448</td>
+    </tr>
+    <tr>
+      <th>Census_FirmwareManufacturerIdentifier</th>
+      <td>183257</td>
+      <td>2.054109</td>
+    </tr>
+    <tr>
+      <th>Census_IsFlightsDisabled</th>
+      <td>160523</td>
+      <td>1.799286</td>
+    </tr>
+    <tr>
+      <th>Census_FirmwareVersionIdentifier</th>
+      <td>160133</td>
+      <td>1.794915</td>
+    </tr>
+    <tr>
+      <th>Census_OEMModelIdentifier</th>
+      <td>102233</td>
+      <td>1.145919</td>
+    </tr>
+    <tr>
+      <th>Census_OEMNameIdentifier</th>
+      <td>95478</td>
+      <td>1.070203</td>
+    </tr>
+    <tr>
+      <th>Firewall</th>
+      <td>91350</td>
+      <td>1.023933</td>
+    </tr>
+    <tr>
+      <th>Census_TotalPhysicalRAM</th>
+      <td>80533</td>
+      <td>0.902686</td>
+    </tr>
+    <tr>
+      <th>Census_IsAlwaysOnAlwaysConnectedCapable</th>
+      <td>71343</td>
+      <td>0.799676</td>
+    </tr>
+    <tr>
+      <th>Census_OSInstallLanguageIdentifier</th>
+      <td>60084</td>
+      <td>0.673475</td>
+    </tr>
+    <tr>
+      <th>IeVerIdentifier</th>
+      <td>58894</td>
+      <td>0.660137</td>
+    </tr>
+    <tr>
+      <th>Census_PrimaryDiskTotalCapacity</th>
+      <td>53016</td>
+      <td>0.594251</td>
+    </tr>
+    <tr>
+      <th>Census_SystemVolumeTotalCapacity</th>
+      <td>53002</td>
+      <td>0.594094</td>
+    </tr>
+    <tr>
+      <th>Census_InternalPrimaryDiagonalDisplaySizeInInches</th>
+      <td>47134</td>
+      <td>0.528320</td>
+    </tr>
+    <tr>
+      <th>Census_InternalPrimaryDisplayResolutionHorizontal</th>
+      <td>46986</td>
+      <td>0.526661</td>
+    </tr>
+    <tr>
+      <th>Census_InternalPrimaryDisplayResolutionVertical</th>
+      <td>46986</td>
+      <td>0.526661</td>
+    </tr>
+    <tr>
+      <th>Census_ProcessorModelIdentifier</th>
+      <td>41343</td>
+      <td>0.463410</td>
+    </tr>
+    <tr>
+      <th>Census_ProcessorManufacturerIdentifier</th>
+      <td>41313</td>
+      <td>0.463073</td>
+    </tr>
+    <tr>
+      <th>Census_ProcessorCoreCount</th>
+      <td>41306</td>
+      <td>0.462995</td>
+    </tr>
+    <tr>
+      <th>AVProductsEnabled</th>
+      <td>36221</td>
+      <td>0.405998</td>
+    </tr>
+    <tr>
+      <th>AVProductsInstalled</th>
+      <td>36221</td>
+      <td>0.405998</td>
+    </tr>
+    <tr>
+      <th>AVProductStatesIdentifier</th>
+      <td>36221</td>
+      <td>0.405998</td>
+    </tr>
+    <tr>
+      <th>IsProtected</th>
+      <td>36044</td>
+      <td>0.404014</td>
+    </tr>
+    <tr>
+      <th>RtpStateBitfield</th>
+      <td>32318</td>
+      <td>0.362249</td>
+    </tr>
+    <tr>
+      <th>Census_IsVirtualDevice</th>
+      <td>15953</td>
+      <td>0.178816</td>
+    </tr>
+    <tr>
+      <th>Census_PrimaryDiskTypeName</th>
+      <td>12844</td>
+      <td>0.143967</td>
+    </tr>
+    <tr>
+      <th>UacLuaenable</th>
+      <td>10838</td>
+      <td>0.121482</td>
+    </tr>
+    <tr>
+      <th>Census_ChassisTypeName</th>
+      <td>623</td>
+      <td>0.006983</td>
+    </tr>
+    <tr>
+      <th>GeoNameIdentifier</th>
+      <td>213</td>
+      <td>0.002387</td>
+    </tr>
+    <tr>
+      <th>Census_PowerPlatformRoleName</th>
+      <td>55</td>
+      <td>0.000616</td>
+    </tr>
+    <tr>
+      <th>OsBuildLab</th>
+      <td>21</td>
+      <td>0.000235</td>
+    </tr>
+    <tr>
+      <th>LocaleEnglishNameIdentifier</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>AvSigVersion</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>OsPlatformSubRelease</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Processor</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>OsVer</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>AppVersion</th>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Looks much better.</p>
+<p>Reference:</p>
+<ul>
+<li><a href="http://blog.baoduge.com/rproject_hexo/" target="_blank" rel="noopener">Solution about how to post my R code and result on Hexo blog</a></li>
+<li><a href="https://blog.baoyukun.win/%E6%8A%80%E6%9C%AF/%E5%89%8D%E7%AB%AF/hbwjnotebook/" target="_blank" rel="noopener">Happy blogging with Jupyter Notebook</a></li>
+<li><a href="https://blomadam.github.io/tutorials/2017/04/09/ipynb-to-Jekyll-Post-tools.html" target="_blank" rel="noopener">Post Jupyter notebooks to your GitHub blog</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/" title="Embed Jupyter Notebook into Hexo Post">http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jupyter-Notebook/" rel="tag"># Jupyter Notebook</a>
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/My-Exploratory-Data-Analysis-for-Microsoft-Malware-Prediction/" rel="next" title="My Exploratory Data Analysis for Microsoft Malware Prediction">
+                <i class="fa fa-chevron-left"></i> My Exploratory Data Analysis for Microsoft Malware Prediction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/Missing-Fullscreen-Button-on-HTML5-Video-Player/" rel="prev" title="Missing Fullscreen Button on HTML5 Video Player">
+                Missing Fullscreen Button on HTML5 Video Player <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Useful-Ideas"><span class="nav-number">1.</span> <span class="nav-text">Useful Ideas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#My-Solution"><span class="nav-number">2.</span> <span class="nav-text">My Solution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Convert-ipynb-to-md"><span class="nav-number">2.1.</span> <span class="nav-text">Convert .ipynb to .md</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embed-in-a-Hexo-Post"><span class="nav-number">2.2.</span> <span class="nav-text">Embed in a Hexo Post</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fix-the-DataFrame-Table-Display-Issue"><span class="nav-number">2.2.1.</span> <span class="nav-text">Fix the DataFrame Table Display Issue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pretty-Tables"><span class="nav-number">2.2.2.</span> <span class="nav-text">Pretty Tables</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/";
+        this.page.identifier = "2019/How-to-Embed-Jupyter-Notebook-content-to-Hexo/";
+        this.page.title = 'Embed Jupyter Notebook into Hexo Post';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

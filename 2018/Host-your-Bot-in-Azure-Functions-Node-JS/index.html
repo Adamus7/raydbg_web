@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Microsoft released its serverless computing solution, Azure Functions, for easily running small pieces of business logic, or functions, in the cloud. By leveraging Azure Functions, developers are able">
+<meta name="keywords" content="Microsoft Bot Framework,Azure Functions,Node.JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Host Your Bot in Azure Functions (Node.JS)">
+<meta property="og:url" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="Microsoft released its serverless computing solution, Azure Functions, for easily running small pieces of business logic, or functions, in the cloud. By leveraging Azure Functions, developers are able">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/create-a-new-function-bot.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/test-the-function-bot.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/open-in-azure-functions.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/open-in-azure-functions-2.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/index.js.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/download-source-code-1.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/download-source-code-2.png">
+<meta property="og:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/bot-src.png">
+<meta property="og:updated_time" content="2019-05-01T06:43:51.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Host Your Bot in Azure Functions (Node.JS)">
+<meta name="twitter:description" content="Microsoft released its serverless computing solution, Azure Functions, for easily running small pieces of business logic, or functions, in the cloud. By leveraging Azure Functions, developers are able">
+<meta name="twitter:image" content="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/create-a-new-function-bot.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Host Your Bot in Azure Functions (Node.JS) | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Host Your Bot in Azure Functions (Node.JS)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-05-30 11:11:39" itemprop="dateCreated datePublished" datetime="2018-05-30T11:11:39+08:00">2018-05-30</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/Host-your-Bot-in-Azure-Functions-Node-JS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Microsoft released its serverless computing solution, <a href="https://azure.microsoft.com/en-us/services/functions/" target="_blank" rel="noopener">Azure Functions</a>, for easily running small pieces of business logic, or functions, in the cloud. By leveraging Azure Functions, developers are able to build HTTP-based API endpoints accessible by a wide range of applications while no need to care about the platform or server configurations. Later, Azure Bot Service got a new family member, Azure Function Bot, which is based on Azure Functions.<br>Prashant has published a <a href="https://azure.microsoft.com/en-us/blog/announcing-general-availability-of-azure-functions/" target="_blank" rel="noopener">blog post</a> about how to create Function Bot with C#. But it seems that there is still some tricks to build and deploy your Function Bot with Node.JS.<br><a id="more"></a><br><em>Note</em>: I assume you have worked on Web App Bot before or have basic knowledge about Microsoft Bot Framework and Azure Functions.</p>
+<h1 id="Create-a-Function-Bot"><a href="#Create-a-Function-Bot" class="headerlink" title="Create a Function Bot"></a>Create a Function Bot</h1><p>Let us start from the template. Creating a new Function Bot with Node.JS is quite easy in Azure portal:<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/create-a-new-function-bot.png" width="500"><br>After creation, you can test your Bot in Azure Bot Service blade by clicking <code>Test in Web Chat</code>:<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/test-the-function-bot.png" width="500"><br>Looks great.</p>
+<h1 id="Build-Your-Bot"><a href="#Build-Your-Bot" class="headerlink" title="Build Your Bot"></a>Build Your Bot</h1><p>Similar to Web App Bot, you can go through and edit your code by clicking <code>Open this bot in Azure Functions</code>.<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/open-in-azure-functions.png" width="800"><br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/open-in-azure-functions-2.png" width="800"><br>But looking at the above code in Functions, it is quite complex and doesn’t look like a simple Bot application.<br>Meanwhile, the body code of your Bot is saved in <code>messages\index.js</code>:<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/index.js.png" width="800"><br>But you may find that any changes of index.js here wouldn’t take any effect on your Bot.</p>
+<h2 id="What-Happens"><a href="#What-Happens" class="headerlink" title="What Happens?"></a>What Happens?</h2><p>Azure Function Bot templates use <a href="https://github.com/Azure/azure-functions-pack" target="_blank" rel="noopener">Azure Functions Pack</a> for optimal performance. The key point is <code>funcpack</code> will help you to package not only your code but also the code of Bot Framework (Node.JS) into one single js script. That script is what you have seen when clicks on <code>messages</code>. A configuration file, <code>function.json</code>, also will be generated by <code>funcpack</code>, which will tell Azure Functions engine where to find the executable script <code>&quot;scriptFile&quot;: &quot;../.funcpack/index.js&quot;</code>:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"disabled"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"bindings"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"authLevel"</span>: <span class="string">"function"</span>,</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"httpTrigger"</span>,</span><br><span class="line">      <span class="string">"direction"</span>: <span class="string">"in"</span>,</span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"req"</span>,</span><br><span class="line">      <span class="string">"methods"</span>: [</span><br><span class="line">        <span class="string">"post"</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"type"</span>: <span class="string">"http"</span>,</span><br><span class="line">      <span class="string">"direction"</span>: <span class="string">"out"</span>,</span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"res"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"_originalEntryPoint"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"_originalScriptFile"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"scriptFile"</span>: <span class="string">"../.funcpack/index.js"</span>,</span><br><span class="line">  <span class="string">"entryPoint"</span>: <span class="string">"messages"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Now the question is how could I start editing the code of my Bot as <code>../.funcpack/index.js</code> is fully packaged?</p>
+<h2 id="Workaround"><a href="#Workaround" class="headerlink" title="Workaround"></a>Workaround</h2><p>Since we know the executable script is packaged by <code>funcpack</code>, we can download the source code to a local folder and edit the Bot code locally, then pack the code by <code>funcpack</code> and upload them to Azure Functions.<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/download-source-code-1.png" width="500"><br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/download-source-code-2.png" width="500"><br>Open the source code locally with your preferred IDE.<br><img src="/2018/Host-your-Bot-in-Azure-Functions-Node-JS/bot-src.png" width="500"><br>Install <code>funcpack</code>: <code>npm install -g azure-functions-pack</code>.<br>Install the dependence (botbuiler) by running <code>npm install</code> inside <code>messages</code> folder.<br>Edit the code of the Bot under <code>messages\index.js</code> which just contains your Bot logic.<br>Then package the code by running <code>funcpack pack ./</code> in <code>bot-src</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS ..\NodeJSFuncBot-src\bot-src&gt; funcpack pack ./</span><br><span class="line">info: Generating project files/metadata</span><br><span class="line">info: Webpacking project</span><br><span class="line">info: Complete!</span><br></pre></td></tr></table></figure></p>
+<p>At last, publish your code to Azure Functions by <a href="https://github.com/Azure/azure-functions-core-tools" target="_blank" rel="noopener">Azure Func CLI</a>: <code>func azure functionapp publish &lt;your app name&gt;</code>. Or simply, copy the contents of <code>.funcpack\index.js</code> and paste them to the <code>messages</code>. Or upload the script to the Auzre Functions directly. Please note, when uploading your files, you need to include the single <code>.funcpack</code> directory (in the Functions App root), but you don’t need your <code>node_modules</code> directory.<br>Enjoy it.</p>
+<h1 id="More-Words"><a href="#More-Words" class="headerlink" title="More Words"></a>More Words</h1><p>Ideally, there should be a script or a trigger function of Azure Functions to help users package the JS code automatically on the air once there is any code change, just like what they have done for C#.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR.jpg" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/" title="Host Your Bot in Azure Functions (Node.JS)">http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Microsoft-Bot-Framework/" rel="tag"># Microsoft Bot Framework</a>
+          
+            <a href="/tags/Azure-Functions/" rel="tag"># Azure Functions</a>
+          
+            <a href="/tags/Node-JS/" rel="tag"># Node.JS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/Debugging-Net-Core-on-Linux-with-LLDB/" rel="next" title="Debugging .NET Core on Linux with LLDB">
+                <i class="fa fa-chevron-left"></i> Debugging .NET Core on Linux with LLDB
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/Debugging-ASP-NET-Core-Application-with-Framework-Source-Code/" rel="prev" title="Debugging ASP.NET Core Application with Framework Source Code">
+                Debugging ASP.NET Core Application with Framework Source Code <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-a-Function-Bot"><span class="nav-number">1.</span> <span class="nav-text">Create a Function Bot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-Your-Bot"><span class="nav-number">2.</span> <span class="nav-text">Build Your Bot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-Happens"><span class="nav-number">2.1.</span> <span class="nav-text">What Happens?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Workaround"><span class="nav-number">2.2.</span> <span class="nav-text">Workaround</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#More-Words"><span class="nav-number">3.</span> <span class="nav-text">More Words</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2018/Host-your-Bot-in-Azure-Functions-Node-JS/";
+        this.page.identifier = "2018/Host-your-Bot-in-Azure-Functions-Node-JS/";
+        this.page.title = 'Host Your Bot in Azure Functions (Node.JS)';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
