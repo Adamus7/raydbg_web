@@ -104,17 +104,18 @@
 
 
 
-  <meta name="description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
+  <meta name="description" content="近期使用Homebrew去下载安装软件的时候总是卡在update阶段，时间非常久，难以忍受。记录一下解决方法，">
+<meta name="keywords" content="Homebrew">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Homebrew 下载更新极慢的问题">
+<meta property="og:title" content="解决Homebrew下载更新极慢的问题">
 <meta property="og:url" content="http://www.raydbg.com/2019/Homebrew-Update-Slow/index.html">
 <meta property="og:site_name" content="RayDBG">
-<meta property="og:description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
+<meta property="og:description" content="近期使用Homebrew去下载安装软件的时候总是卡在update阶段，时间非常久，难以忍受。记录一下解决方法，">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-05-03T17:27:44.559Z">
+<meta property="og:updated_time" content="2019-05-03T17:41:53.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Homebrew 下载更新极慢的问题">
-<meta name="twitter:description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
+<meta name="twitter:title" content="解决Homebrew下载更新极慢的问题">
+<meta name="twitter:description" content="近期使用Homebrew去下载安装软件的时候总是卡在update阶段，时间非常久，难以忍受。记录一下解决方法，">
 
 
 
@@ -131,7 +132,7 @@
   };
 </script>
 
-  <title>Homebrew 下载更新极慢的问题 | RayDBG</title>
+  <title>解决Homebrew下载更新极慢的问题 | RayDBG</title>
   
 
 
@@ -360,7 +361,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Homebrew 下载更新极慢的问题
+          <h1 class="post-title" itemprop="name headline">解决Homebrew下载更新极慢的问题
 
               
             
@@ -438,25 +439,24 @@
       
 
       
-        <p>近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，<br><a id="more"></a></p>
-<h1 id="症状"><a href="#症状" class="headerlink" title="症状"></a>症状</h1><p>使用Homebrew安装软件的时候一直卡在Update阶段。<br>同时发现从github.com下载文件也极度缓慢（几十KB/s）。</p>
+        <p>近期使用Homebrew去下载安装软件的时候总是卡在update阶段，时间非常久，难以忍受。记录一下解决方法，<br><a id="more"></a></p>
+<h1 id="症状"><a href="#症状" class="headerlink" title="症状"></a>症状</h1><p>使用Homebrew安装软件的时候一直卡在Update阶段。同时发现从github.com下载文件也极度缓慢（几十 KB/s）。</p>
 <h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><p>使用<code>brew update --verbose</code>观察update过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">brew update --verbose</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">Fetching /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">remote: Enumerating objects: 337, done.</span><br><span class="line">remote: Counting objects: 100% (337/337), done.</span><br><span class="line">remote: Compressing objects: 100% (88/88), done.</span><br><span class="line">remote: Total 298 (delta 221), reused 287 (delta 210), pack-reused 0</span><br><span class="line">Receiving objects: 100% (298/298), 50.91 KiB | 39.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (221/221), completed with 39 local objects.</span><br><span class="line">From https://github.com/Homebrew/homebrew-core</span><br><span class="line">   65a45a9..583b7f1  master     -&gt; origin/master</span><br><span class="line">remote: Enumerating objects: 179429, done.</span><br><span class="line">remote: Counting objects: 100% (179429/179429), done.</span><br><span class="line">remote: Compressing objects: 100% (56607/56607), done.</span><br><span class="line">Receiving objects:   4% (7628/177189), 1.48 MiB | 8.00 KiB/s</span><br></pre></td></tr></table></figure></p>
-<p>发展update过程卡在从github上的仓库获取文件的过程。这个结果与手动从github下载文件慢的症状相互印证。</p>
+<p>发展update卡在从github仓库获取文件的过程。这个结果与手动从github下载文件慢的症状相互印证。</p>
 <h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>由于问题主要是在国内网络环境github下载慢，因此尝试：</p>
 <ol>
-<li>更换国内的homebrew源；</li>
-<li>使用代理访问github.com。<h2 id="更换Homebrew源"><a href="#更换Homebrew源" class="headerlink" title="更换Homebrew源"></a>更换Homebrew源</h2>使用一下命令更换国内阿里云上的homebrew镜像：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 替换brew.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git</span><br><span class="line"># 替换homebrew-core.git:</span><br><span class="line">cd &quot;$(brew --repo)/Library/Taps/homebrew/homebrew-core&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/homebrew-core.git</span><br></pre></td></tr></table></figure>
-</li>
+<li>更换使用国内的homebrew镜像源；</li>
+<li>使用代理访问github.com。</li>
 </ol>
+<h2 id="更换Homebrew源"><a href="#更换Homebrew源" class="headerlink" title="更换Homebrew源"></a>更换Homebrew源</h2><p>使用以下命令更换国内阿里云上的homebrew镜像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 替换brew.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git</span><br><span class="line"># 替换homebrew-core.git:</span><br><span class="line">cd &quot;$(brew --repo)/Library/Taps/homebrew/homebrew-core&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/homebrew-core.git</span><br><span class="line"></span><br><span class="line"># 替换homebrew-bottles:</span><br><span class="line">echo &apos;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles&apos; &gt;&gt; ~/.zshrc</span><br><span class="line">source ~/.zshrc</span><br></pre></td></tr></table></figure></p>
 <p>替换后，问题依旧，继续查看日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">brew update --verbose</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">Fetching /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">From https://mirrors.aliyun.com/homebrew/homebrew-core</span><br><span class="line"> + 583b7f1...8435590 master     -&gt; origin/master  (forced update)</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">remote: Enumerating objects: 179429, done.</span><br><span class="line">remote: Counting objects: 100% (179429/179429), done.</span><br><span class="line">remote: Compressing objects: 100% (56607/56607), done.</span><br><span class="line">Receiving objects:   6% (11170/177189), 2.16 MiB | 30.00 KiB/s</span><br></pre></td></tr></table></figure></p>
-<p>可以看到由于<code>homebrew-cask</code>的仓库依然指向了github，这个过程还是慢。阿里云的<a href="https://opsx.alibaba.com/mirror" target="_blank" rel="noopener">镜像站</a>没有提供<code>homebrew-cask</code>，进一步搜索找到<a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">USTC镜像站</a>提供了<code>homebrew-cask</code>的源。使用上述同样的命令更换源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 替换homebrew-cask.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;/Library/Taps/homebrew/homebrew-cask</span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br></pre></td></tr></table></figure></p>
+<p>可以看到由于<code>homebrew-cask</code>的仓库依然指向了Github，这个过程还是慢。阿里云的<a href="https://opsx.alibaba.com/mirror" target="_blank" rel="noopener">镜像站</a>没有提供<code>homebrew-cask</code>，进一步搜索找到<a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">USTC镜像站</a>，该站提供了<code>homebrew-cask</code>的源。使用上述同样的命令更换源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 替换homebrew-cask.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;/Library/Taps/homebrew/homebrew-cask</span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br></pre></td></tr></table></figure></p>
 <p>测试发现问题解决。</p>
 <blockquote>
-<blockquote>
-<p>Note: 并未更换Homebrew Bottles的源，等遇到该问题时候再做决定是否更换，更换方法见<a href="https://mirrors.ustc.edu.cn/help/homebrew-bottles.html" target="_blank" rel="noopener">这里</a>。</p>
+<p>Note: Homebrew Bottles源的更换方法详见<a href="https://mirrors.ustc.edu.cn/help/homebrew-bottles.html" target="_blank" rel="noopener">这里</a>。</p>
+<p>官方源地址：<br>  <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a><br>  <a href="https://github.com/Homebrew/homebrew-core.git" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-core.git</a><br>  <a href="https://github.com/Homebrew/homebrew-cask" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-cask</a></p>
 </blockquote>
-</blockquote>
-<h2 id="使用代理访问github"><a href="#使用代理访问github" class="headerlink" title="使用代理访问github"></a>使用代理访问github</h2><p>家里的路由器已经配置好了SS代理，只要简单把github.com加入到黑名单强制走proxy就可以了。然而代理速度一般，效果不及上述方法。</p>
+<h2 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h2><p>家里的路由器已经配置好了SS代理，只要简单把<code>github.com</code>加入到黑名单强制走proxy就可以了。然而代理速度一般，效果不及上述方法。同时为了保证在其他网络环境下的效率，保留方法一所做的修改。</p>
 
       
     </div>
@@ -514,7 +514,7 @@
   <li class="post-copyright-link">
     <strong>Post link: </strong>
     
-    <a href="http://www.raydbg.com/2019/Homebrew-Update-Slow/" title="Homebrew 下载更新极慢的问题">http://www.raydbg.com/2019/Homebrew-Update-Slow/</a>
+    <a href="http://www.raydbg.com/2019/Homebrew-Update-Slow/" title="解决Homebrew下载更新极慢的问题">http://www.raydbg.com/2019/Homebrew-Update-Slow/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
@@ -524,6 +524,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Homebrew/" rel="tag"># Homebrew</a>
+          
+        </div>
       
 
       
@@ -708,7 +714,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">36</span>
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -769,7 +777,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#症状"><span class="nav-number">1.</span> <span class="nav-text">症状</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题定位"><span class="nav-number">2.</span> <span class="nav-text">问题定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更换Homebrew源"><span class="nav-number">3.1.</span> <span class="nav-text">更换Homebrew源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用代理访问github"><span class="nav-number">3.2.</span> <span class="nav-text">使用代理访问github</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#症状"><span class="nav-number">1.</span> <span class="nav-text">症状</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题定位"><span class="nav-number">2.</span> <span class="nav-text">问题定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更换Homebrew源"><span class="nav-number">3.1.</span> <span class="nav-text">更换Homebrew源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用代理"><span class="nav-number">3.2.</span> <span class="nav-text">使用代理</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -953,7 +961,7 @@
       var disqus_config = function () {
         this.page.url = "http://www.raydbg.com/2019/Homebrew-Update-Slow/";
         this.page.identifier = "2019/Homebrew-Update-Slow/";
-        this.page.title = 'Homebrew 下载更新极慢的问题';
+        this.page.title = '解决Homebrew下载更新极慢的问题';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
