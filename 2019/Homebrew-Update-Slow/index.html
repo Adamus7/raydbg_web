@@ -104,27 +104,24 @@
 
 
 
-  <meta name="description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
-<meta name="keywords" content="Mac">
+  <meta name="description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的Mac OS生产力配置">
-<meta property="og:url" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/index.html">
+<meta property="og:title" content="Homebrew 下载更新极慢的问题">
+<meta property="og:url" content="http://www.raydbg.com/2019/Homebrew-Update-Slow/index.html">
 <meta property="og:site_name" content="RayDBG">
-<meta property="og:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
+<meta property="og:description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/effect-1.png">
-<meta property="og:updated_time" content="2019-05-02T15:37:43.863Z">
+<meta property="og:updated_time" content="2019-05-03T17:27:44.559Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的Mac OS生产力配置">
-<meta name="twitter:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
-<meta name="twitter:image" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/effect-1.png">
+<meta name="twitter:title" content="Homebrew 下载更新极慢的问题">
+<meta name="twitter:description" content="近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，">
 
 
 
 
 
 
-  <link rel="canonical" href="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/">
+  <link rel="canonical" href="http://www.raydbg.com/2019/Homebrew-Update-Slow/">
 
 
 
@@ -134,7 +131,7 @@
   };
 </script>
 
-  <title>我的Mac OS生产力配置 | RayDBG</title>
+  <title>Homebrew 下载更新极慢的问题 | RayDBG</title>
   
 
 
@@ -346,7 +343,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/Homebrew-Update-Slow/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ray Wang">
@@ -363,7 +360,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">我的Mac OS生产力配置
+          <h1 class="post-title" itemprop="name headline">Homebrew 下载更新极慢的问题
 
               
             
@@ -389,7 +386,7 @@
                 
               
 
-              <time title="Created: 2019-05-02 22:16:19" itemprop="dateCreated datePublished" datetime="2019-05-02T22:16:19+08:00">2019-05-02</time>
+              <time title="Created: 2019-05-04 00:48:57" itemprop="dateCreated datePublished" datetime="2019-05-04T00:48:57+08:00">2019-05-04</time>
             
 
             
@@ -404,9 +401,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/My-Productivity-Mac-Configuration/#comments" itemprop="discussionUrl">
+                <a href="/2019/Homebrew-Update-Slow/#comments" itemprop="discussionUrl">
                 
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/My-Productivity-Mac-Configuration/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/Homebrew-Update-Slow/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -441,25 +438,26 @@
       
 
       
-        <p>写一个博客记录自己在Mac上做的一些生产力配置。<br><a id="more"></a></p>
-<h1 id="Terminal升级"><a href="#Terminal升级" class="headerlink" title="Terminal升级"></a>Terminal升级</h1><p>Mac原生的Terminal中规中矩，没有特别好看，也没有特别有效率。因此参考之前的经验决定：</p>
+        <p>近期使用Homebrew去下载安装软件的时候非常痛苦。记录一下解决方法，<br><a id="more"></a></p>
+<h1 id="症状"><a href="#症状" class="headerlink" title="症状"></a>症状</h1><p>使用Homebrew安装软件的时候一直卡在Update阶段。<br>同时发现从github.com下载文件也极度缓慢（几十KB/s）。</p>
+<h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><p>使用<code>brew update --verbose</code>观察update过程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">brew update --verbose</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">Fetching /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">remote: Enumerating objects: 337, done.</span><br><span class="line">remote: Counting objects: 100% (337/337), done.</span><br><span class="line">remote: Compressing objects: 100% (88/88), done.</span><br><span class="line">remote: Total 298 (delta 221), reused 287 (delta 210), pack-reused 0</span><br><span class="line">Receiving objects: 100% (298/298), 50.91 KiB | 39.00 KiB/s, done.</span><br><span class="line">Resolving deltas: 100% (221/221), completed with 39 local objects.</span><br><span class="line">From https://github.com/Homebrew/homebrew-core</span><br><span class="line">   65a45a9..583b7f1  master     -&gt; origin/master</span><br><span class="line">remote: Enumerating objects: 179429, done.</span><br><span class="line">remote: Counting objects: 100% (179429/179429), done.</span><br><span class="line">remote: Compressing objects: 100% (56607/56607), done.</span><br><span class="line">Receiving objects:   4% (7628/177189), 1.48 MiB | 8.00 KiB/s</span><br></pre></td></tr></table></figure></p>
+<p>发展update过程卡在从github上的仓库获取文件的过程。这个结果与手动从github下载文件慢的症状相互印证。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>由于问题主要是在国内网络环境github下载慢，因此尝试：</p>
 <ol>
-<li>用iTerm2代替Terminal。</li>
-<li>用zsh代替bash。</li>
-<li>针对zsh做部分优化。</li>
+<li>更换国内的homebrew源；</li>
+<li>使用代理访问github.com。<h2 id="更换Homebrew源"><a href="#更换Homebrew源" class="headerlink" title="更换Homebrew源"></a>更换Homebrew源</h2>使用一下命令更换国内阿里云上的homebrew镜像：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 替换brew.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git</span><br><span class="line"># 替换homebrew-core.git:</span><br><span class="line">cd &quot;$(brew --repo)/Library/Taps/homebrew/homebrew-core&quot;</span><br><span class="line">git remote set-url origin https://mirrors.aliyun.com/homebrew/homebrew-core.git</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h2 id="iTerm2安装与配置"><a href="#iTerm2安装与配置" class="headerlink" title="iTerm2安装与配置"></a>iTerm2安装与配置</h2><p>因为Homebrew的update最近一直很慢，因此直接从<a href="https://www.iterm2.com/index.html" target="_blank" rel="noopener">iTerm2网站</a>下载并安装。<br>修改iTerm2的Color Schemes，在这个<a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="noopener">iTerm2-Color-Schemes</a> repro中可以找到很多schemes，下载后通过<code>iTerm2</code> &gt; <code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Colors</code> &gt; <code>Color Presets...</code>来load需要的scheme。</p>
-<h2 id="安装zsh和oh-my-zsh"><a href="#安装zsh和oh-my-zsh" class="headerlink" title="安装zsh和oh-my-zsh"></a>安装zsh和oh-my-zsh</h2><p>Bash作为Mac的默认shell已经足够好用，但是zsh在一些细节上更胜一筹。通过命令<code>cat /etc/shells</code>可以查看当前系统的shell类型。通过下面的命令来设置zsh作为默认shell:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure></p>
-<p>Zsh的一个问题是配置起来比较麻烦，然而<a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a>的出现改变了这一现状。通过oh-my-zsh的theme，可以轻松的实现zsh的定制化。</p>
-<h3 id="安装oh-my-zsh"><a href="#安装oh-my-zsh" class="headerlink" title="安装oh-my-zsh:"></a>安装oh-my-zsh:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
-<p>配置oh-my-zsh的theme：<code>sudo vim ~/.zshrc</code>。在.zshrc中找到并修改<code>ZSH_THEME=&quot;agnoster&quot;</code></p>
-<h3 id="安装nerd-font"><a href="#安装nerd-font" class="headerlink" title="安装nerd font"></a>安装nerd font</h3><p>Agnoster主题的prompt依赖<a href="https://nerdfonts.com/" target="_blank" rel="noopener">nerd font project</a>中的一些特殊符号，如果没有，prompt中会有乱码出现，因此需要按照对应的字体，安装方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew tap caskroom/fonts</span><br><span class="line">brew cask install font-sourcecodepro-nerd-font</span><br></pre></td></tr></table></figure></p>
-<p>最后到iTerm2中，通过<code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Text</code> &gt; <code>Change Font</code>来启用安装的nerd font`。</p>
-<h3 id="隐藏hostname"><a href="#隐藏hostname" class="headerlink" title="隐藏hostname"></a>隐藏hostname</h3><p>当前的hostname又臭又长，不想在本机使用的时候看到username@hostname的形式。按照这个<a href="https://github.com/agnoster/agnoster-zsh-theme/issues/39#issuecomment-307338817" target="_blank" rel="noopener">issue</a>中的comment来修改prompt的形式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 编辑.zshrc</span><br><span class="line"># 在文件的末尾粘贴如下内容：</span><br><span class="line">prompt_context() &#123;</span><br><span class="line">  if [[ &quot;$USER&quot; != &quot;$DEFAULT_USER&quot; || -n &quot;$SSH_CLIENT&quot; ]]; then</span><br><span class="line">    prompt_segment black default &quot;%(!.%&#123;%F&#123;yellow&#125;%&#125;.)$USER&quot;</span><br><span class="line">  fi</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最终的效果如下：<br><img src="/2019/My-Productivity-Mac-Configuration/effect-1.png" width="600"></p>
-<h2 id="iTerm2快捷键"><a href="#iTerm2快捷键" class="headerlink" title="iTerm2快捷键"></a>iTerm2快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">新建Tab：Cmd + t</span><br><span class="line">关闭Tab：Cmd + w</span><br><span class="line">切换Tab：Cmd + 数字 Cmd + 左右方向键</span><br><span class="line">切换全屏：Cmd + enter</span><br><span class="line"></span><br><span class="line">屏幕结果搜索：Cmd + F</span><br><span class="line">剪切板历史记录：Cmd + Shift + H</span><br><span class="line">cmd历史记录：Cmd + Option + B</span><br><span class="line">Tab排列：Cmd + Option + E</span><br><span class="line"></span><br><span class="line">清除当前行：ctrl + u </span><br><span class="line">到行首：ctrl + a </span><br><span class="line">到行尾：ctrl + e </span><br><span class="line">删除光标之前的单词：ctrl + w </span><br><span class="line">删除到文本末尾：ctrl + k </span><br><span class="line">Undo：ctrl + _ </span><br><span class="line">Paste the last thing to be cut：ctrl + y</span><br></pre></td></tr></table></figure>
-<h2 id="Vim语法高亮"><a href="#Vim语法高亮" class="headerlink" title="Vim语法高亮"></a>Vim语法高亮</h2><p>开启Vi语法高亮：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#编辑.vimrc</span><br><span class="line">vi ~/.vimrc</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">syntax on</span><br></pre></td></tr></table></figure></p>
-<h1 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h1>
+<p>替换后，问题依旧，继续查看日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">brew update --verbose</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">Fetching /usr/local/Homebrew...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Checking if we need to fetch /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core...</span><br><span class="line">From https://mirrors.aliyun.com/homebrew/homebrew-core</span><br><span class="line"> + 583b7f1...8435590 master     -&gt; origin/master  (forced update)</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask...</span><br><span class="line">Fetching /usr/local/Homebrew/Library/Taps/caskroom/homebrew-fonts...</span><br><span class="line">remote: Enumerating objects: 179429, done.</span><br><span class="line">remote: Counting objects: 100% (179429/179429), done.</span><br><span class="line">remote: Compressing objects: 100% (56607/56607), done.</span><br><span class="line">Receiving objects:   6% (11170/177189), 2.16 MiB | 30.00 KiB/s</span><br></pre></td></tr></table></figure></p>
+<p>可以看到由于<code>homebrew-cask</code>的仓库依然指向了github，这个过程还是慢。阿里云的<a href="https://opsx.alibaba.com/mirror" target="_blank" rel="noopener">镜像站</a>没有提供<code>homebrew-cask</code>，进一步搜索找到<a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">USTC镜像站</a>提供了<code>homebrew-cask</code>的源。使用上述同样的命令更换源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 替换homebrew-cask.git:</span><br><span class="line">cd &quot;$(brew --repo)&quot;/Library/Taps/homebrew/homebrew-cask</span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br></pre></td></tr></table></figure></p>
+<p>测试发现问题解决。</p>
+<blockquote>
+<blockquote>
+<p>Note: 并未更换Homebrew Bottles的源，等遇到该问题时候再做决定是否更换，更换方法见<a href="https://mirrors.ustc.edu.cn/help/homebrew-bottles.html" target="_blank" rel="noopener">这里</a>。</p>
+</blockquote>
+</blockquote>
+<h2 id="使用代理访问github"><a href="#使用代理访问github" class="headerlink" title="使用代理访问github"></a>使用代理访问github</h2><p>家里的路由器已经配置好了SS代理，只要简单把github.com加入到黑名单强制走proxy就可以了。然而代理速度一般，效果不及上述方法。</p>
+
       
     </div>
 
@@ -516,7 +514,7 @@
   <li class="post-copyright-link">
     <strong>Post link: </strong>
     
-    <a href="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/" title="我的Mac OS生产力配置">http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/</a>
+    <a href="http://www.raydbg.com/2019/Homebrew-Update-Slow/" title="Homebrew 下载更新极慢的问题">http://www.raydbg.com/2019/Homebrew-Update-Slow/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
@@ -527,12 +525,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Mac/" rel="tag"># Mac</a>
-          
-        </div>
-      
 
       
       
@@ -542,8 +534,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/Understanding-Microsoft-Bot-Framework-1/" rel="next" title="理解Microsoft Bot Framework（一）：BotBuilder">
-                <i class="fa fa-chevron-left"></i> 理解Microsoft Bot Framework（一）：BotBuilder
+              <a href="/2019/My-Productivity-Mac-Configuration/" rel="next" title="我的Mac OS生产力配置">
+                <i class="fa fa-chevron-left"></i> 我的Mac OS生产力配置
               </a>
             
           </div>
@@ -551,10 +543,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/Homebrew-Update-Slow/" rel="prev" title="Homebrew 下载更新极慢的问题">
-                Homebrew 下载更新极慢的问题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -781,7 +769,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Terminal升级"><span class="nav-number">1.</span> <span class="nav-text">Terminal升级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2安装与配置"><span class="nav-number">1.1.</span> <span class="nav-text">iTerm2安装与配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装zsh和oh-my-zsh"><span class="nav-number">1.2.</span> <span class="nav-text">安装zsh和oh-my-zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装oh-my-zsh"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装oh-my-zsh:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nerd-font"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装nerd font</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏hostname"><span class="nav-number">1.2.3.</span> <span class="nav-text">隐藏hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2快捷键"><span class="nav-number">1.3.</span> <span class="nav-text">iTerm2快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim语法高亮"><span class="nav-number">1.4.</span> <span class="nav-text">Vim语法高亮</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH配置"><span class="nav-number">2.</span> <span class="nav-text">SSH配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#症状"><span class="nav-number">1.</span> <span class="nav-text">症状</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题定位"><span class="nav-number">2.</span> <span class="nav-text">问题定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更换Homebrew源"><span class="nav-number">3.1.</span> <span class="nav-text">更换Homebrew源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用代理访问github"><span class="nav-number">3.2.</span> <span class="nav-text">使用代理访问github</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -963,9 +951,9 @@
   
     <script>
       var disqus_config = function () {
-        this.page.url = "http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/";
-        this.page.identifier = "2019/My-Productivity-Mac-Configuration/";
-        this.page.title = '我的Mac OS生产力配置';
+        this.page.url = "http://www.raydbg.com/2019/Homebrew-Update-Slow/";
+        this.page.identifier = "2019/Homebrew-Update-Slow/";
+        this.page.title = 'Homebrew 下载更新极慢的问题';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
