@@ -113,7 +113,7 @@
 <meta property="og:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/effect-1.png">
-<meta property="og:updated_time" content="2019-05-02T15:37:43.863Z">
+<meta property="og:updated_time" content="2019-05-07T01:14:43.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="我的Mac OS生产力配置">
 <meta name="twitter:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
@@ -459,7 +459,14 @@
 <p>最终的效果如下：<br><img src="/2019/My-Productivity-Mac-Configuration/effect-1.png" width="600"></p>
 <h2 id="iTerm2快捷键"><a href="#iTerm2快捷键" class="headerlink" title="iTerm2快捷键"></a>iTerm2快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">新建Tab：Cmd + t</span><br><span class="line">关闭Tab：Cmd + w</span><br><span class="line">切换Tab：Cmd + 数字 Cmd + 左右方向键</span><br><span class="line">切换全屏：Cmd + enter</span><br><span class="line"></span><br><span class="line">屏幕结果搜索：Cmd + F</span><br><span class="line">剪切板历史记录：Cmd + Shift + H</span><br><span class="line">cmd历史记录：Cmd + Option + B</span><br><span class="line">Tab排列：Cmd + Option + E</span><br><span class="line"></span><br><span class="line">清除当前行：ctrl + u </span><br><span class="line">到行首：ctrl + a </span><br><span class="line">到行尾：ctrl + e </span><br><span class="line">删除光标之前的单词：ctrl + w </span><br><span class="line">删除到文本末尾：ctrl + k </span><br><span class="line">Undo：ctrl + _ </span><br><span class="line">Paste the last thing to be cut：ctrl + y</span><br></pre></td></tr></table></figure>
 <h2 id="Vim语法高亮"><a href="#Vim语法高亮" class="headerlink" title="Vim语法高亮"></a>Vim语法高亮</h2><p>开启Vi语法高亮：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#编辑.vimrc</span><br><span class="line">vi ~/.vimrc</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">syntax on</span><br></pre></td></tr></table></figure></p>
-<h1 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h1>
+<h1 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h1><ol>
+<li>配置好登陆用的私钥。</li>
+<li>在<code>~/.ssh</code>下面创建config文件。</li>
+<li>复制私钥到<code>~/.ssh</code>的子目录下。</li>
+<li>编辑config文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host &lt;myshortname realname.example.com&gt;</span><br><span class="line">    HostName &lt;realname.example.com&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"></span><br><span class="line">Host &lt;hostalias&gt;</span><br><span class="line">    HostName &lt;host ip address&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
       
     </div>
 
