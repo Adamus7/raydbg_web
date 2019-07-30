@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://www.raydbg.com/2019/Introduction-to-Libra-1/2.png">
 <meta property="og:image" content="http://www.raydbg.com/2019/Introduction-to-Libra-1/3.png">
 <meta property="og:image" content="http://www.raydbg.com/2019/Introduction-to-Libra-1/4.png">
-<meta property="og:updated_time" content="2019-07-27T02:33:59.456Z">
+<meta property="og:updated_time" content="2019-07-30T08:05:31.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Libra技术原理浅析（一）">
 <meta name="twitter:description" content="Facebook在2019年揭示了其在加密货币层面点野心。19年6月，Facebook突然宣布了自己的发币计划，Libra。其目的是想要打造一个属于“the internet of money”的时代。Facebook希望借助Libra去服务全球万千用户，让所有人享受电子支付带来的便利。关于Libra的争议和各种政策层面分析层出不穷，但是从技术层面该如何理解Libra，似乎并没有非常多的讨论。媒体">
@@ -505,9 +505,13 @@
 <h3 id="接受交易"><a href="#接受交易" class="headerlink" title="接受交易"></a>接受交易</h3><ol>
 <li>Validator通过AC获取交易。</li>
 <li>AC通过VM执行交易检查，包括：使用交易中的公钥（地址）验证交易签名（基于密码学的数字签名原理：有且只有通过Alice的公钥解开Alice的签名可以获得和原文内容一致的文本；由此可以确认交易的发起者一定是Alice本人，且交易的内容真实可信），检查Alice余额是否足够，交易序列号是否正常等。</li>
-<li>当交易通过检查，AC会把这个交易放到Mempool中。<h3 id="在-Validator-之间共享交易信息"><a href="#在-Validator-之间共享交易信息" class="headerlink" title="在 Validator 之间共享交易信息"></a>在 Validator 之间共享交易信息</h3></li>
+<li>当交易通过检查，AC会把这个交易放到Mempool中。</li>
+</ol>
+<h3 id="在-Validator-之间共享交易信息"><a href="#在-Validator-之间共享交易信息" class="headerlink" title="在 Validator 之间共享交易信息"></a>在 Validator 之间共享交易信息</h3><ol start="4">
 <li>Mempool中可能已经有很多比交易了。</li>
-<li>Mempool会通过shared-mempool协议和其他Validator节点共享各自所有的已接受的交易信息。<h3 id="打包提议"><a href="#打包提议" class="headerlink" title="打包提议"></a>打包提议</h3></li>
+<li>Mempool会通过shared-mempool协议和其他Validator节点共享各自所有的已接受的交易信息。</li>
+</ol>
+<h3 id="打包提议"><a href="#打包提议" class="headerlink" title="打包提议"></a>打包提议</h3><ol start="6">
 <li>假设当前Validator是共识过程中的proposer/leader（不在此详细讨论Libra共识算法的具体过程），该节点会从Mempool中拿出一部分交易，打成一个区块（Block）。Consensus模块负责同步这个块到其他Validator节点上。</li>
 <li>Consensus模块接下来负责协调各个Validator对该区块内当交易内容达成共识，包括交易记录的顺序。</li>
 </ol>
