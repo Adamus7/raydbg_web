@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/safari-pinned-tab.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种绕过“反抓包”策略的 HTTP 报文捕获方法">
+<meta property="og:url" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/index.html">
+<meta property="og:site_name" content="RayDBG">
+<meta property="og:description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/2.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/3.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/4.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/5.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/6.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/7.png">
+<meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/8.png">
+<meta property="og:updated_time" content="2020-04-14T10:34:31.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一种绕过“反抓包”策略的 HTTP 报文捕获方法">
+<meta name="twitter:description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+<meta name="twitter:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>一种绕过“反抓包”策略的 HTTP 报文捕获方法 | RayDBG</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109690789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-109690789-1');
+</script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion .logo-line-before i { left: initial; }
+    .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RayDBG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Life debugger.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一种绕过“反抓包”策略的 HTTP 报文捕获方法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-04-14 18:26:23" itemprop="dateCreated datePublished" datetime="2020-04-14T18:26:23+08:00">2020-04-14</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。<br>“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避免网络流量被抓包软件截获。<br>这类策略，给日常的问题排查或研究带来了一些不便。本文将介绍一种绕过该安全策略的通用方法，实现对目标 App 的网络包捕获。<br><a id="more"></a><br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png"></p>
+<h1 id="2-基本原理"><a href="#2-基本原理" class="headerlink" title="2. 基本原理"></a>2. 基本原理</h1><p>第 1 节简单介绍了一般抓包原理和“反抓包”策略。可以看到，绕过“反抓包”策略的关键是如何转发流量到“中间人”设备上。<br>现有的 App 市场上有一类可以帮助用户实现连接私有特殊协议的 VPN 工具软件，如 Kitsunebi。这类 App 的基本原理是：1. 构建一个 OS 级别的 VPN 通道；2. 构建一个本地的代理服务客户端程序；3. 通过 VPN 通道截获本地流量，转发到本地代理服务的客户端程序上，再由该客户端通过指定的代理协议转发流量到远程的代理服务器上，打通通信隧道。<br>我们注意到，VPN 通道可以实现全局的 TCP 层面数据转发，加上远程代理服务器是由客户端软件配置的，因此，可以实现不依赖 OS Proxy 配置的流量转发。另外，这类 VPN 软件一般支持 SOCKS5 代理协议，而“中间人”抓包软件往往也支持 SOCKS5 代理服务。结合这两个特性，可以实现的抓包拓扑为：目标 App 的通信通过 VPN 通道转发到本地代理客户端，由本地代理客户端转发流量到代理服务器上，该代理服务器实际是我们的抓包软件，再由抓包软件把请求转发到目标应用服务器上。基本原理如下图所示：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/2.png"><br>在这个流程中，抓包软件可以截获流量，从而实现对 HTTP 的记录和展示，以及 HTTPS 报文的解密。</p>
+<h1 id="3-实施步骤示例"><a href="#3-实施步骤示例" class="headerlink" title="3. 实施步骤示例"></a>3. 实施步骤示例</h1><blockquote>
+<p>物料准备：</p>
+<ul>
+<li>手机（以 iOS 为例）</li>
+<li>一个支持 SOCKS5 代理能力的工具 App（以 Kitsunebi 为例）</li>
+<li>“中间人”设备和软件（以 Mac 和 Charles 为例）</li>
+</ul>
+</blockquote>
+<h1 id="3-1-抓包工具配置"><a href="#3-1-抓包工具配置" class="headerlink" title="3.1 抓包工具配置"></a>3.1 抓包工具配置</h1><p>以 Charles 为例，主要的配置步骤就是打开 SOCKS 代理服务：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/3.png"></p>
+<h1 id="3-2-客户端配置"><a href="#3-2-客户端配置" class="headerlink" title="3.2 客户端配置"></a>3.2 客户端配置</h1><p>以 iOS/Kitsunebi 为例，基本步骤如下：</p>
+<ol>
+<li><p>在 Kitsunebi 中选择全局转发模式（简单高效）：</p>
+<img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/4.png">
+</li>
+<li><p>新建一个 SOCKS 代理服务配置，并指向 Charles 机器 IP 和已配置的 SOCKS 服务端口：</p>
+<img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/5.png">
+</li>
+<li><p>配置启用该 SOCKS 代理：</p>
+<img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/6.png">
+</li>
+<li><p>启用 Kitsunebi VPN 服务：</p>
+<img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/7.png">
+</li>
+</ol>
+<h1 id="3-3-验证"><a href="#3-3-验证" class="headerlink" title="3.3 验证"></a>3.3 验证</h1><p>此时，原来配置了“反抓包”策略的 HTTP 流量应该可以被 Charles 捕获：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/8.png"></p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这里介绍了一种通用的绕过“强制不走 OS Proxy 反抓包策略”的 HTTP 报文捕获方法，解释了原理和一种实施途径。在实践中，可以结合实际情况通过不同的工具组合在不同的平台上实现该方法。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payQR-wechat.png" alt="Ray Wang WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/payQR.jpg" alt="Ray Wang Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Ray Wang</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/" title="一种绕过“反抓包”策略的 HTTP 报文捕获方法">http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/Introduciton-to-Libra-2/" rel="next" title="Libra技术原理浅析（二）：Move语言">
+                <i class="fa fa-chevron-left"></i> Libra技术原理浅析（二）：Move语言
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Ray Wang">
+            
+              <p class="site-author-name" itemprop="name">Ray Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">38</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Adamus7" title="GitHub &rarr; https://github.com/Adamus7" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.linkedin.com/in/ray-wang-38721994" title="Linkedin &rarr; https://www.linkedin.com/in/ray-wang-38721994" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-number">1.</span> <span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-基本原理"><span class="nav-number">2.</span> <span class="nav-text">2. 基本原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-实施步骤示例"><span class="nav-number">3.</span> <span class="nav-text">3. 实施步骤示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1-抓包工具配置"><span class="nav-number">4.</span> <span class="nav-text">3.1 抓包工具配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-2-客户端配置"><span class="nav-number">5.</span> <span class="nav-text">3.2 客户端配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-验证"><span class="nav-number">6.</span> <span class="nav-text">3.3 验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">7.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray Wang</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://www-raydbg-com.disqus.com/count.js" async></script>
+  
+
+  
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/";
+        this.page.identifier = "2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/";
+        this.page.title = '一种绕过“反抓包”策略的 HTTP 报文捕获方法';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://www-raydbg-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
