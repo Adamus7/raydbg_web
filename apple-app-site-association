@@ -1,10 +1,19 @@
 {
-  "applinks": {
-    "apps": [],
-    "details": {
-      "YT9X59E77V.com.isonmal.www.Test": {
-        "paths":[ "*" ]
-      }
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "YT9X59E77V.com.isonmal.www.Test",
+                "paths": [ "*" ]
+            },
+            {
+                "appID": "6GSN85844H.com.yrrcb.MobileBank",
+                "paths": [ "*" ]
+            },
+            {
+                "appID": "T2BA3DRQ3J.com.yrrcb.MobileBank",
+                "paths": [ "*" ]
+            }
+        ]
     }
-  }
 }
