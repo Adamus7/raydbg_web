@@ -340,6 +340,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ray Wang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayDBG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/" class="post-title-link" itemprop="url">一种绕过“反抓包”策略的 HTTP 报文捕获方法</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-04-14 18:26:23" itemprop="dateCreated datePublished" datetime="2020-04-14T18:26:23+08:00">2020-04-14</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。<br>“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避免网络流量被抓包软件截获。<br>这类策略，给日常的问题排查或研究带来了一些不便。本文将介绍一种绕过该安全策略的通用方法，实现对目标 App 的网络包捕获。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2019/Introduciton-to-Libra-2/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1720,161 +1875,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.raydbg.com/2018/Setup-Deep-Learning-Envrionment/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Ray Wang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RayDBG">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/Setup-Deep-Learning-Envrionment/" class="post-title-link" itemprop="url">Setup My Deep Leaning Environment: Anaconda, Jupyter Notebook and TensorFlow</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-12-24 23:34:30" itemprop="dateCreated datePublished" datetime="2018-12-24T23:34:30+08:00">2018-12-24</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/Setup-Deep-Learning-Envrionment/#comments" itemprop="discussionUrl">
-                
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/Setup-Deep-Learning-Envrionment/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Several years ago when I was in college, I used Matlab to study Machine Learning. I just would like to pick up Deep Learning again to catch up the AI trend. The first step is to set up the tools and environment. In this post I will share how to set up my Deep Learning environment with Anaconda and Jupyter Notebook, and then install TensorFlow.<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/Setup-Deep-Learning-Envrionment/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-         
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1924,7 +1924,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-count">26</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2015,7 +2015,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">38</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
