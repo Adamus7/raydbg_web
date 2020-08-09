@@ -104,19 +104,19 @@
 
 
 
-  <meta name="description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
+  <meta name="description" content="写一个博客记录自己在 Mac 上做的一些生产力配置。">
 <meta name="keywords" content="Mac">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的Mac OS生产力配置">
+<meta property="og:title" content="我的 Mac OS 生产力配置">
 <meta property="og:url" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/index.html">
 <meta property="og:site_name" content="RayDBG">
-<meta property="og:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
+<meta property="og:description" content="写一个博客记录自己在 Mac 上做的一些生产力配置。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/effect-1.png">
-<meta property="og:updated_time" content="2019-05-07T01:16:33.719Z">
+<meta property="og:updated_time" content="2020-08-09T03:52:01.292Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我的Mac OS生产力配置">
-<meta name="twitter:description" content="写一个博客记录自己在Mac上做的一些生产力配置。">
+<meta name="twitter:title" content="我的 Mac OS 生产力配置">
+<meta name="twitter:description" content="写一个博客记录自己在 Mac 上做的一些生产力配置。">
 <meta name="twitter:image" content="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/effect-1.png">
 
 
@@ -134,7 +134,7 @@
   };
 </script>
 
-  <title>我的Mac OS生产力配置 | RayDBG</title>
+  <title>我的 Mac OS 生产力配置 | RayDBG</title>
   
 
 
@@ -363,7 +363,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">我的Mac OS生产力配置
+          <h1 class="post-title" itemprop="name headline">我的 Mac OS 生产力配置
 
               
             
@@ -441,32 +441,37 @@
       
 
       
-        <p>写一个博客记录自己在Mac上做的一些生产力配置。<br><a id="more"></a></p>
-<h1 id="Terminal升级"><a href="#Terminal升级" class="headerlink" title="Terminal升级"></a>Terminal升级</h1><p>Mac原生的Terminal中规中矩，没有特别好看，也没有特别有效率。因此参考之前的经验决定：</p>
+        <p>写一个博客记录自己在 Mac 上做的一些生产力配置。<br><a id="more"></a></p>
+<h1 id="Terminal-升级"><a href="#Terminal-升级" class="headerlink" title="Terminal 升级"></a>Terminal 升级</h1><p>Mac 原生的 Terminal 中规中矩，没有特别好看，也没有特别有效率。因此参考之前的经验决定：</p>
 <ol>
-<li>用iTerm2代替Terminal。</li>
-<li>用zsh代替bash。</li>
-<li>针对zsh做部分优化。</li>
+<li>用 iTerm2 代替 Terminal。</li>
+<li>用 zsh 代替 bash。</li>
+<li>针对 zsh 做部分优化。</li>
 </ol>
-<h2 id="iTerm2安装与配置"><a href="#iTerm2安装与配置" class="headerlink" title="iTerm2安装与配置"></a>iTerm2安装与配置</h2><p>因为Homebrew的update最近一直很慢，因此直接从<a href="https://www.iterm2.com/index.html" target="_blank" rel="noopener">iTerm2网站</a>下载并安装。<br>修改iTerm2的Color Schemes，在这个<a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="noopener">iTerm2-Color-Schemes</a> repro中可以找到很多schemes，下载后通过<code>iTerm2</code> &gt; <code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Colors</code> &gt; <code>Color Presets...</code>来load需要的scheme。</p>
-<h2 id="安装zsh和oh-my-zsh"><a href="#安装zsh和oh-my-zsh" class="headerlink" title="安装zsh和oh-my-zsh"></a>安装zsh和oh-my-zsh</h2><p>Bash作为Mac的默认shell已经足够好用，但是zsh在一些细节上更胜一筹。通过命令<code>cat /etc/shells</code>可以查看当前系统的shell类型。通过下面的命令来设置zsh作为默认shell:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure></p>
-<p>Zsh的一个问题是配置起来比较麻烦，然而<a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a>的出现改变了这一现状。通过oh-my-zsh的theme，可以轻松的实现zsh的定制化。</p>
-<h3 id="安装oh-my-zsh"><a href="#安装oh-my-zsh" class="headerlink" title="安装oh-my-zsh:"></a>安装oh-my-zsh:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
-<p>配置oh-my-zsh的theme：<code>sudo vim ~/.zshrc</code>。在.zshrc中找到并修改<code>ZSH_THEME=&quot;agnoster&quot;</code></p>
-<h3 id="安装nerd-font"><a href="#安装nerd-font" class="headerlink" title="安装nerd font"></a>安装nerd font</h3><p>Agnoster主题的prompt依赖<a href="https://nerdfonts.com/" target="_blank" rel="noopener">nerd font project</a>中的一些特殊符号，如果没有，prompt中会有乱码出现，因此需要按照对应的字体，安装方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew tap caskroom/fonts</span><br><span class="line">brew cask install font-sourcecodepro-nerd-font</span><br></pre></td></tr></table></figure></p>
-<p>最后到iTerm2中，通过<code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Text</code> &gt; <code>Change Font</code>来启用安装的nerd font`。</p>
-<h3 id="隐藏hostname"><a href="#隐藏hostname" class="headerlink" title="隐藏hostname"></a>隐藏hostname</h3><p>当前的hostname又臭又长，不想在本机使用的时候看到username@hostname的形式。按照这个<a href="https://github.com/agnoster/agnoster-zsh-theme/issues/39#issuecomment-307338817" target="_blank" rel="noopener">issue</a>中的comment来修改prompt的形式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 编辑.zshrc</span><br><span class="line"># 在文件的末尾粘贴如下内容：</span><br><span class="line">prompt_context() &#123;</span><br><span class="line">  if [[ &quot;$USER&quot; != &quot;$DEFAULT_USER&quot; || -n &quot;$SSH_CLIENT&quot; ]]; then</span><br><span class="line">    prompt_segment black default &quot;%(!.%&#123;%F&#123;yellow&#125;%&#125;.)$USER&quot;</span><br><span class="line">  fi</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="iTerm2-安装与配置"><a href="#iTerm2-安装与配置" class="headerlink" title="iTerm2 安装与配置"></a>iTerm2 安装与配置</h2><p>因为 Homebrew 的 update 最近一直很慢，因此直接从 <a href="https://www.iterm2.com/index.html" target="_blank" rel="noopener">iTerm2 网站</a> 下载并安装。<br>修改 iTerm2 的 Color Schemes，在这个 <a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="noopener">iTerm2-Color-Schemes</a> repro 中可以找到很多 schemes，下载后通过<code>iTerm2</code> &gt; <code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Colors</code> &gt; <code>Color Presets...</code>来 load 需要的 scheme。</p>
+<h2 id="安装-zsh-和-oh-my-zsh"><a href="#安装-zsh-和-oh-my-zsh" class="headerlink" title="安装 zsh 和 oh-my-zsh"></a>安装 zsh 和 oh-my-zsh</h2><p>Bash 作为 Mac 的默认 shell 已经足够好用，但是 zsh 在一些细节上更胜一筹。通过命令<code>cat /etc/shells</code>可以查看当前系统的 shell 类型。通过下面的命令来设置 zsh 作为默认 shell:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure></p>
+<p>Zsh 的一个问题是配置起来比较麻烦，然而 <a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a> 的出现改变了这一现状。通过 oh-my-zsh 的 theme，可以轻松的实现 zsh 的定制化。</p>
+<h3 id="安装-oh-my-zsh"><a href="#安装-oh-my-zsh" class="headerlink" title="安装 oh-my-zsh:"></a>安装 oh-my-zsh:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+<p>配置 oh-my-zsh 的 theme：<code>sudo vim ~/.zshrc</code>。在。zshrc 中找到并修改<code>ZSH_THEME=&quot;agnoster&quot;</code></p>
+<h3 id="安装-nerd-font"><a href="#安装-nerd-font" class="headerlink" title="安装 nerd font"></a>安装 nerd font</h3><p>Agnoster 主题的 prompt 依赖 <a href="https://nerdfonts.com/" target="_blank" rel="noopener">nerd font project</a> 中的一些特殊符号，如果没有，prompt 中会有乱码出现，因此需要按照对应的字体，安装方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew tap caskroom/fonts</span><br><span class="line">brew cask install font-sourcecodepro-nerd-font</span><br></pre></td></tr></table></figure></p>
+<p>最后到 iTerm2 中，通过<code>Preferences</code> &gt; <code>Profiles</code> &gt; <code>Text</code> &gt; <code>Change Font</code>来启用安装的 nerd font`。</p>
+<h3 id="隐藏-hostname"><a href="#隐藏-hostname" class="headerlink" title="隐藏 hostname"></a>隐藏 hostname</h3><p>当前的 hostname 又臭又长，不想在本机使用的时候看到 username@hostname 的形式。按照这个 <a href="https://github.com/agnoster/agnoster-zsh-theme/issues/39#issuecomment-307338817" target="_blank" rel="noopener">issue</a> 中的 comment 来修改 prompt 的形式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 编辑。zshrc</span><br><span class="line"># 在文件的末尾粘贴如下内容：</span><br><span class="line">prompt_context() &#123;</span><br><span class="line">  if [[ &quot;$USER&quot; != &quot;$DEFAULT_USER&quot; || -n &quot;$SSH_CLIENT&quot; ]]; then</span><br><span class="line">    prompt_segment black default &quot;%(!.%&#123;%F&#123;yellow&#125;%&#125;.)$USER&quot;</span><br><span class="line">  fi</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>最终的效果如下：<br><img src="/2019/My-Productivity-Mac-Configuration/effect-1.png" width="600"></p>
-<h2 id="iTerm2快捷键"><a href="#iTerm2快捷键" class="headerlink" title="iTerm2快捷键"></a>iTerm2快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">新建Tab：Cmd + t</span><br><span class="line">关闭Tab：Cmd + w</span><br><span class="line">切换Tab：Cmd + 数字 Cmd + 左右方向键</span><br><span class="line">切换全屏：Cmd + enter</span><br><span class="line"></span><br><span class="line">屏幕结果搜索：Cmd + F</span><br><span class="line">剪切板历史记录：Cmd + Shift + H</span><br><span class="line">cmd历史记录：Cmd + Option + B</span><br><span class="line">Tab排列：Cmd + Option + E</span><br><span class="line"></span><br><span class="line">清除当前行：ctrl + u </span><br><span class="line">到行首：ctrl + a </span><br><span class="line">到行尾：ctrl + e </span><br><span class="line">删除光标之前的单词：ctrl + w </span><br><span class="line">删除到文本末尾：ctrl + k </span><br><span class="line">Undo：ctrl + _ </span><br><span class="line">Paste the last thing to be cut：ctrl + y</span><br></pre></td></tr></table></figure>
-<h2 id="Vim语法高亮"><a href="#Vim语法高亮" class="headerlink" title="Vim语法高亮"></a>Vim语法高亮</h2><p>开启Vi语法高亮：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#编辑.vimrc</span><br><span class="line">vi ~/.vimrc</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">syntax on</span><br></pre></td></tr></table></figure></p>
-<h1 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h1><ol>
+<h2 id="iTerm2-快捷键"><a href="#iTerm2-快捷键" class="headerlink" title="iTerm2 快捷键"></a>iTerm2 快捷键</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">新建 Tab：Cmd + t</span><br><span class="line">关闭 Tab：Cmd + w</span><br><span class="line">切换 Tab：Cmd + 数字 Cmd + 左右方向键</span><br><span class="line">切换全屏：Cmd + enter</span><br><span class="line"></span><br><span class="line">屏幕结果搜索：Cmd + F</span><br><span class="line">剪切板历史记录：Cmd + Shift + H</span><br><span class="line">cmd 历史记录：Cmd + Option + B</span><br><span class="line">Tab 排列：Cmd + Option + E</span><br><span class="line"></span><br><span class="line">清除当前行：ctrl + u </span><br><span class="line">到行首：ctrl + a </span><br><span class="line">到行尾：ctrl + e </span><br><span class="line">删除光标之前的单词：ctrl + w </span><br><span class="line">删除到文本末尾：ctrl + k </span><br><span class="line">Undo：ctrl + _ </span><br><span class="line">Paste the last thing to be cut：ctrl + y</span><br></pre></td></tr></table></figure>
+<h2 id="Vim-语法高亮"><a href="#Vim-语法高亮" class="headerlink" title="Vim 语法高亮"></a>Vim 语法高亮</h2><p>开启 Vi 语法高亮：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#编辑。vimrc</span><br><span class="line">vi ~/.vimrc</span><br><span class="line"></span><br><span class="line">#添加</span><br><span class="line">syntax on</span><br></pre></td></tr></table></figure></p>
+<h1 id="SSH-配置"><a href="#SSH-配置" class="headerlink" title="SSH 配置"></a>SSH 配置</h1><ol>
 <li>配置好登陆用的私钥。</li>
-<li>在<code>~/.ssh</code>下面创建config文件。</li>
+<li>在<code>~/.ssh</code>下面创建 config 文件。</li>
 <li>复制私钥到<code>~/.ssh</code>的子目录下。</li>
-<li>编辑config文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host &lt;myshortname realname.example.com&gt;</span><br><span class="line">    HostName &lt;realname.example.com&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"></span><br><span class="line">Host &lt;hostalias&gt;</span><br><span class="line">    HostName &lt;host ip address&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br></pre></td></tr></table></figure>
+<li>编辑 config 文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host &lt;myshortname realname.example.com&gt;</span><br><span class="line">    HostName &lt;realname.example.com&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"></span><br><span class="line">Host &lt;hostalias&gt;</span><br><span class="line">    HostName &lt;host ip address&gt;</span><br><span class="line">    IdentityFile ~/.ssh/&lt;realname_rsa&gt; # private key for realname</span><br><span class="line">    User &lt;remoteusername&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>配置好之后可以直接<code>ssh &lt;hostname&gt;</code>登陆远程机器。</p>
+<h2 id="VSCODE-配置"><a href="#VSCODE-配置" class="headerlink" title="VSCODE 配置"></a>VSCODE 配置</h2><p>安装了 oh-my-zsh 之后，在 code 的 terminal 中无法显示 Nerd Font 中包含的 icon。根据这个 <a href="https://gist.github.com/480/3b41f449686a089f34edb45d00672f28#file-gistfile1-md" target="_blank" rel="noopener">post</a> 可以解决问题：</p>
+<ol>
+<li>Install Nerd Fonts</li>
+<li>Change settings in vscode: <code>&quot;terminal.integrated.fontFamily&quot;: &quot;Hack Nerd Font&quot;</code></li>
+</ol>
 
       
     </div>
@@ -529,7 +534,7 @@
   <li class="post-copyright-link">
     <strong>Post link: </strong>
     
-    <a href="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/" title="我的Mac OS生产力配置">http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/</a>
+    <a href="http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/" title="我的 Mac OS 生产力配置">http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
@@ -555,8 +560,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/Understanding-Microsoft-Bot-Framework-1/" rel="next" title="理解Microsoft Bot Framework：BotBuilder">
-                <i class="fa fa-chevron-left"></i> 理解Microsoft Bot Framework：BotBuilder
+              <a href="/2019/Understanding-Microsoft-Bot-Framework-1/" rel="next" title="理解 Microsoft Bot Framework：BotBuilder">
+                <i class="fa fa-chevron-left"></i> 理解 Microsoft Bot Framework：BotBuilder
               </a>
             
           </div>
@@ -565,8 +570,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/Homebrew-Update-Slow/" rel="prev" title="解决Homebrew下载更新极慢的问题">
-                解决Homebrew下载更新极慢的问题 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/Homebrew-Update-Slow/" rel="prev" title="解决 Homebrew 下载更新极慢的问题">
+                解决 Homebrew 下载更新极慢的问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -802,7 +807,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Terminal升级"><span class="nav-number">1.</span> <span class="nav-text">Terminal升级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2安装与配置"><span class="nav-number">1.1.</span> <span class="nav-text">iTerm2安装与配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装zsh和oh-my-zsh"><span class="nav-number">1.2.</span> <span class="nav-text">安装zsh和oh-my-zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装oh-my-zsh"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装oh-my-zsh:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nerd-font"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装nerd font</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏hostname"><span class="nav-number">1.2.3.</span> <span class="nav-text">隐藏hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2快捷键"><span class="nav-number">1.3.</span> <span class="nav-text">iTerm2快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim语法高亮"><span class="nav-number">1.4.</span> <span class="nav-text">Vim语法高亮</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH配置"><span class="nav-number">2.</span> <span class="nav-text">SSH配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Terminal-升级"><span class="nav-number">1.</span> <span class="nav-text">Terminal 升级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2-安装与配置"><span class="nav-number">1.1.</span> <span class="nav-text">iTerm2 安装与配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-zsh-和-oh-my-zsh"><span class="nav-number">1.2.</span> <span class="nav-text">安装 zsh 和 oh-my-zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-oh-my-zsh"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装 oh-my-zsh:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-nerd-font"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装 nerd font</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏-hostname"><span class="nav-number">1.2.3.</span> <span class="nav-text">隐藏 hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iTerm2-快捷键"><span class="nav-number">1.3.</span> <span class="nav-text">iTerm2 快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim-语法高亮"><span class="nav-number">1.4.</span> <span class="nav-text">Vim 语法高亮</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH-配置"><span class="nav-number">2.</span> <span class="nav-text">SSH 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCODE-配置"><span class="nav-number">2.1.</span> <span class="nav-text">VSCODE 配置</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -986,7 +991,7 @@
       var disqus_config = function () {
         this.page.url = "http://www.raydbg.com/2019/My-Productivity-Mac-Configuration/";
         this.page.identifier = "2019/My-Productivity-Mac-Configuration/";
-        this.page.title = '我的Mac OS生产力配置';
+        this.page.title = '我的 Mac OS 生产力配置';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
