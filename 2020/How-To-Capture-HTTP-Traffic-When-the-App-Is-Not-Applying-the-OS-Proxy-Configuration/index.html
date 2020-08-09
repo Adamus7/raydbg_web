@@ -104,13 +104,13 @@
 
 
 
-  <meta name="description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+  <meta name="description" content="一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避">
 <meta name="keywords" content="Debugging,HTTP,Charles">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一种绕过“反抓包”策略的 HTTP 报文捕获方法">
 <meta property="og:url" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/index.html">
 <meta property="og:site_name" content="RayDBG">
-<meta property="og:description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+<meta property="og:description" content="一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png">
 <meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/2.png">
@@ -120,10 +120,10 @@
 <meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/6.png">
 <meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/7.png">
 <meta property="og:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/8.png">
-<meta property="og:updated_time" content="2020-04-14T10:36:39.752Z">
+<meta property="og:updated_time" content="2020-08-09T03:28:33.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种绕过“反抓包”策略的 HTTP 报文捕获方法">
-<meta name="twitter:description" content="1. 背景一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Prox">
+<meta name="twitter:description" content="一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避">
 <meta name="twitter:image" content="http://www.raydbg.com/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png">
 
 
@@ -448,9 +448,9 @@
       
 
       
-        <h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p>一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。<br>“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避免网络流量被抓包软件截获。<br>这类策略，给日常的问题排查或研究带来了一些不便。本文将介绍一种绕过该安全策略的通用方法，实现对目标 App 的网络包捕获。<br><a id="more"></a><br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png"></p>
-<h1 id="2-基本原理"><a href="#2-基本原理" class="headerlink" title="2. 基本原理"></a>2. 基本原理</h1><p>第 1 节简单介绍了一般抓包原理和“反抓包”策略。可以看到，绕过“反抓包”策略的关键是如何转发流量到“中间人”设备上。<br>现有的 App 市场上有一类可以帮助用户实现连接私有特殊协议的 VPN 工具软件，如 Kitsunebi。这类 App 的基本原理是：1. 构建一个 OS 级别的 VPN 通道；2. 构建一个本地的代理服务客户端程序；3. 通过 VPN 通道截获本地流量，转发到本地代理服务的客户端程序上，再由该客户端通过指定的代理协议转发流量到远程的代理服务器上，打通通信隧道。<br>我们注意到，VPN 通道可以实现全局的 TCP 层面数据转发，加上远程代理服务器是由客户端软件配置的，因此，可以实现不依赖 OS Proxy 配置的流量转发。另外，这类 VPN 软件一般支持 SOCKS5 代理协议，而“中间人”抓包软件往往也支持 SOCKS5 代理服务。结合这两个特性，可以实现的抓包拓扑为：目标 App 的通信通过 VPN 通道转发到本地代理客户端，由本地代理客户端转发流量到代理服务器上，该代理服务器实际是我们的抓包软件，再由抓包软件把请求转发到目标应用服务器上。基本原理如下图所示：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/2.png"><br>在这个流程中，抓包软件可以截获流量，从而实现对 HTTP 的记录和展示，以及 HTTPS 报文的解密。</p>
-<h1 id="3-实施步骤示例"><a href="#3-实施步骤示例" class="headerlink" title="3. 实施步骤示例"></a>3. 实施步骤示例</h1><blockquote>
+        <p>一般情况下的抓包模式是一种称之为“中间人”抓包的形式，既通过系统 Proxy 配置把网络请求转发到一个充当中间人的程序上（如 Charles、FIddler），再由该抓包程序进行网络请求的转发。这个过程中，抓包软件可以对 HTTP 层面的数据进行记录和展示。<br>“反抓包”是比较常见的 App 网络安全策略。对于上述的这种抓包模式，一种常见的反抓包策略是强制 App 不使用系统配置的 Proxy，由此避免网络流量被抓包软件截获。<br>这类策略，给日常的问题排查或研究带来了一些不便。本文将介绍一种绕过该安全策略的通用方法，实现对目标 App 的网络包捕获。<br><a id="more"></a><br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/1.png"></p>
+<h1 id="1-基本原理"><a href="#1-基本原理" class="headerlink" title="1. 基本原理"></a>1. 基本原理</h1><p>第 1 节简单介绍了一般抓包原理和“反抓包”策略。可以看到，绕过“反抓包”策略的关键是如何转发流量到“中间人”设备上。<br>现有的 App 市场上有一类可以帮助用户实现连接私有特殊协议的 VPN 工具软件，如 Kitsunebi。这类 App 的基本原理是：1. 构建一个 OS 级别的 VPN 通道；2. 构建一个本地的代理服务客户端程序；3. 通过 VPN 通道截获本地流量，转发到本地代理服务的客户端程序上，再由该客户端通过指定的代理协议转发流量到远程的代理服务器上，打通通信隧道。<br>我们注意到，VPN 通道可以实现全局的 TCP 层面数据转发，加上远程代理服务器是由客户端软件配置的，因此，可以实现不依赖 OS Proxy 配置的流量转发。另外，这类 VPN 软件一般支持 SOCKS5 代理协议，而“中间人”抓包软件往往也支持 SOCKS5 代理服务。结合这两个特性，可以实现的抓包拓扑为：目标 App 的通信通过 VPN 通道转发到本地代理客户端，由本地代理客户端转发流量到代理服务器上，该代理服务器实际是我们的抓包软件，再由抓包软件把请求转发到目标应用服务器上。基本原理如下图所示：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/2.png"><br>在这个流程中，抓包软件可以截获流量，从而实现对 HTTP 的记录和展示，以及 HTTPS 报文的解密。</p>
+<h1 id="2-实施步骤示例"><a href="#2-实施步骤示例" class="headerlink" title="2. 实施步骤示例"></a>2. 实施步骤示例</h1><blockquote>
 <p>物料准备：</p>
 <ul>
 <li>手机（以 iOS 为例）</li>
@@ -458,8 +458,8 @@
 <li>“中间人”设备和软件（以 Mac 和 Charles 为例）</li>
 </ul>
 </blockquote>
-<h1 id="3-1-抓包工具配置"><a href="#3-1-抓包工具配置" class="headerlink" title="3.1 抓包工具配置"></a>3.1 抓包工具配置</h1><p>以 Charles 为例，主要的配置步骤就是打开 SOCKS 代理服务：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/3.png"></p>
-<h1 id="3-2-客户端配置"><a href="#3-2-客户端配置" class="headerlink" title="3.2 客户端配置"></a>3.2 客户端配置</h1><p>以 iOS/Kitsunebi 为例，基本步骤如下：</p>
+<h2 id="2-1-抓包工具配置"><a href="#2-1-抓包工具配置" class="headerlink" title="2.1 抓包工具配置"></a>2.1 抓包工具配置</h2><p>以 Charles 为例，主要的配置步骤就是打开 SOCKS 代理服务：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/3.png"></p>
+<h2 id="2-2-客户端配置"><a href="#2-2-客户端配置" class="headerlink" title="2.2 客户端配置"></a>2.2 客户端配置</h2><p>以 iOS/Kitsunebi 为例，基本步骤如下：</p>
 <ol>
 <li><p>在 Kitsunebi 中选择全局转发模式（简单高效）：</p>
 <img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/4.png">
@@ -474,8 +474,8 @@
 <img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/7.png">
 </li>
 </ol>
-<h1 id="3-3-验证"><a href="#3-3-验证" class="headerlink" title="3.3 验证"></a>3.3 验证</h1><p>此时，原来配置了“反抓包”策略的 HTTP 流量应该可以被 Charles 捕获：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/8.png"></p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>这里介绍了一种通用的绕过“强制不走 OS Proxy 反抓包策略”的 HTTP 报文捕获方法，解释了原理和一种实施途径。在实践中，可以结合实际情况通过不同的工具组合在不同的平台上实现该方法。</p>
+<h2 id="2-3-验证"><a href="#2-3-验证" class="headerlink" title="2.3 验证"></a>2.3 验证</h2><p>此时，原来配置了“反抓包”策略的 HTTP 流量应该可以被 Charles 捕获：<br><img src="/2020/How-To-Capture-HTTP-Traffic-When-the-App-Is-Not-Applying-the-OS-Proxy-Configuration/8.png"></p>
+<h1 id="3-小结"><a href="#3-小结" class="headerlink" title="3 小结"></a>3 小结</h1><p>这里介绍了一种通用的绕过“强制不走 OS Proxy 反抓包策略”的 HTTP 报文捕获方法，解释了原理和一种实施途径。在实践中，可以结合实际情况通过不同的工具组合在不同的平台上实现该方法。</p>
 
       
     </div>
@@ -811,7 +811,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-背景"><span class="nav-number">1.</span> <span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-基本原理"><span class="nav-number">2.</span> <span class="nav-text">2. 基本原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-实施步骤示例"><span class="nav-number">3.</span> <span class="nav-text">3. 实施步骤示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1-抓包工具配置"><span class="nav-number">4.</span> <span class="nav-text">3.1 抓包工具配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-2-客户端配置"><span class="nav-number">5.</span> <span class="nav-text">3.2 客户端配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3-验证"><span class="nav-number">6.</span> <span class="nav-text">3.3 验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">7.</span> <span class="nav-text">小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-基本原理"><span class="nav-number">1.</span> <span class="nav-text">1. 基本原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-实施步骤示例"><span class="nav-number">2.</span> <span class="nav-text">2. 实施步骤示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-抓包工具配置"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 抓包工具配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-客户端配置"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 客户端配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-验证"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-小结"><span class="nav-number">3.</span> <span class="nav-text">3 小结</span></a></li></ol></div>
             
 
           </div>
